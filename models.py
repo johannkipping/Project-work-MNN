@@ -20,9 +20,7 @@ class InitModel(tfk.Model):
         self.num_classes = num_classes
         self.optimizer = tfk.optimizers.Adam(eta)
 
-        # Layer definition
-        #self.input_1 = tfk.Input(shape=input_shape)
-
+        # layers of the network
         self.conv2d = tfk.layers.Conv2D(
             32,
             (3,3),
@@ -73,3 +71,5 @@ class InitModel(tfk.Model):
         shape = tf.TensorShape(input_shape).as_list()
         shape[-1] = self.num_classes
         return tf.TensorShape(shape)
+    
+

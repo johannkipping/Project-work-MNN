@@ -17,21 +17,22 @@ def train_and_evaluate(model, bs=128, ep=10, train_images=None, train_labels=Non
     )
     train_time = time() - start
 
-    model.save_weights('./weights/'+model.name)
+    model.save_weights('./data_1_1_init/' + model.name)
 
     model.summary()
 
     test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
 
-    print('Test accuracy =', test_acc)
-    print('Time needed for training:', train_time)
-
-    print(history.history.keys())
+    print('Test accuracy = ', test_acc)
+    print('Time needed for training: ', train_time)
 
     plt.plot(history.history['acc'], label='accuracy')
     plt.plot(history.history['val_acc'], label = 'val_accuracy')
+    plt.title(model.name + 'with batch size: ' + bs + ' ') 
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
-    plt.ylim([0.5, 1])
+    plt.ylim([0, 1])
     plt.legend(loc='lower right')
-    plt.show()
+    plt.savefig('acc_plot_' + model.name + '.png')
+    #plt.show()
+    plt.clf()
