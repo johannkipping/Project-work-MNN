@@ -53,7 +53,7 @@ zero_model.compile(
       metrics=['accuracy']
 )
 
-train_and_evaluate(zero_model, **train_param_dict, **data_dict)
+train_and_evaluate(zero_model, folder_name='1_1_init', **train_param_dict, **data_dict)
 
 
 ### He INITIALIZATION
@@ -68,7 +68,7 @@ random_model.compile(
       metrics=['accuracy']
 )
 
-train_and_evaluate(random_model, **train_param_dict, **data_dict)
+train_and_evaluate(random_model, folder_name='1_1_init', **train_param_dict, **data_dict)
 
 ### KNOWN DATA INITIALIZATION
 # Set the all but last two dense layer to be frozen
@@ -82,4 +82,4 @@ random_model.compile(
       metrics=['accuracy']
 )
 
-train_and_evaluate(random_model, **train_param_dict, **data_dict)
+train_and_evaluate(random_model, folder_name='1_1_init', **train_param_dict, **data_dict)

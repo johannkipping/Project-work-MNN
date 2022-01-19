@@ -6,7 +6,16 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
 
 
-def train_and_evaluate(model, batch_size=128, epochs=10, train_images=None, train_labels=None, test_images=None, test_labels=None):
+def train_and_evaluate(
+        model,
+        batch_size=128,
+        epochs=10,
+        train_images=None,
+        train_labels=None,
+        test_images=None,
+        test_labels=None,
+        folder_name='None'
+    ):
     start = time()
     history = model.fit(
           train_images,
@@ -17,7 +26,7 @@ def train_and_evaluate(model, batch_size=128, epochs=10, train_images=None, trai
     )
     train_time = time() - start
 
-    model.save_weights('./data_1_1_init/' + model.title)
+    model.save_weights('./' + folder_name + '/' + model.title)
 
     model.summary()
 
@@ -33,6 +42,6 @@ def train_and_evaluate(model, batch_size=128, epochs=10, train_images=None, trai
     plt.ylabel('Accuracy')
     plt.ylim([0, 1])
     plt.legend(loc='lower right')
-    plt.savefig('acc_plot_' + model.title + '.png')
+    plt.savefig('./' + folder_name + '/' + 'acc_plot_' + model.title + '.png')
     #plt.show()
     plt.clf()
