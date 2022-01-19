@@ -1,7 +1,14 @@
-\documentclass[]{article}
+\documentclass{article}
+
+\usepackage[a4paper, margin=1.5cm]{geometry}
 
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{multicol}
+\setlength{\columnsep}{1cm}
 
 %opening
 \title{Project Documentation for \\Mathematics of Neural Networks}
@@ -10,6 +17,8 @@
 \begin{document}
 
 \maketitle
+
+\begin{multicols}{2}
 
 \begin{abstract}
 The aim of this project is to test the learned things in the first half of the lecture series on Neural Networks on the example of the Fashion-MNIST Dataset\\
@@ -57,10 +66,11 @@ Idea: Test for overfitting and generalization with own pictures (for fun). Maybe
 Idea: Let tensorflow decide on the usage of different approaches as insight was achieved in the exercises and modifications are not cheap.\\
 \\
 \textbf{Attribution/Feature Visualization}\\
-Idea: Visualize the computed nets feature maps by using Saliency maps and grad-Cam. Try out deconvolution/guided backpropagation (DeconvNet) if possible! Relu has to be used! \\
+Idea: Visualize a net (with more layers) feature maps by using Saliency maps and grad-Cam. Try out guided backpropagation if possible! Relu has to be used! Gradient ascent (google feature visualization)!\\
+Neuron/Channel/Layer(DeepDream)
 \\
-
-Progress will be documented with screenshots of the console and explanation. Graphs will be used.
+\textbf{Adversarial Attack}\\
+Idea: Use an adversarial attack to trick a net.
 
 \section{Getting to know Neural Networks}
 This section will describe the first set of investigative experiments. Mainly regarding stuff of the first couple of lectures its main aim is to allow to get an understanding and feeling for the behavior of Neural Networks.
@@ -106,9 +116,42 @@ This method allow the last two dense layers for classification to be further tra
 	\caption{plots of....}
 	\label{fig:fig}
 \end{figure}
+The resulting argument to be made is that form now on random initialization will be used due to lacking of known data. Zero initialization is not to be used.
+
+\subsection{Hyperparameters for baseline network}
+The hyperparameters for the fixed network structure of the baseline network with Adam as a fixed optimizer are batch size, epochs, learning rate, activation functions and initializers. The latter two have been or will be examined at another point in this documentation. In the following part a small grid-like search is employed.\\
+\\
+\begin{centering}
+	\begin{tabular}{c c c c}
+		%\toprule[2pt]
+		 & 32 & 64 & 128 \\
+		\toprule[2pt]
+		0.1 & x  & x & x \\
+		\midrule[0.2pt]
+		0.01 & x  & x & x \\
+		\midrule[0.2pt]
+		0.001 & x  & x & x \\
+		\bottomrule[2pt]\\
+		\multicolumn{4}{c}{Epochs: 5}
+	\end{tabular}
+	\hfill
+	\begin{tabular}{c c c c}
+		%\toprule[2pt]
+		& 32 & 64 & 128 \\
+		\toprule[2pt]
+		0.1 & x  & x & x \\
+		\midrule[0.2pt]
+		0.01 & x  & x & x \\
+		\midrule[0.2pt]
+		0.001 & x  & x & x \\
+		\bottomrule[2pt]\\
+		\multicolumn{4}{c}{Epochs: 20}
+	\end{tabular}
+\end{centering}
+
+
 
 \subsection{Network structure}
-\subsection{Hyperparameters}
 
 
 \section{Regularization and Attribution}
@@ -118,4 +161,5 @@ Using gradient tape -> saliency map\\
 Global average pooling -> class activation map\\
 Grad-CAM! am ehesten
 
+\end{multicols}
 \end{document}

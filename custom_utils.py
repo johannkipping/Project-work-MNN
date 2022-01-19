@@ -27,7 +27,7 @@ def train_and_evaluate(
     )
     train_time = time() - start
 
-    model.save_weights('./' + 'weights_' + folder_name + '/' + model.title)
+    #model.save_weights('./' + 'weights_' + folder_name + '/' + model.title)
 
     model.summary()
 
