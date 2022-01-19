@@ -1,5 +1,6 @@
 from time   import time      # For time measuring
 import warnings
+import os
 
 import matplotlib.pyplot as plt
 warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -38,15 +39,19 @@ def train_and_evaluate(
     plt.plot(history.history['acc'], label='accuracy')
     plt.plot(history.history['val_acc'], label = 'val_accuracy')
     plt.title(
-        model.title + 'with batch size: ' + str(batch_size) + '\n' 
-        + 'Training time: ' + str(round(train_time,2))
-        + ' test accuracy: ' + str(round(test_acc,2))
+        model.title + ' with \n' 
+        + 'Batch size: ' + str(batch_size) 
+        + '  train time: ' + str(round(train_time,2))
+        + '  test accuracy: ' + str(round(test_acc,2))
     )
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
     plt.ylim([0, 1])
     plt.legend(loc='lower right')
-    plt.savefig('./' + 'img_' + folder_name + '/' + 'acc_plot_' + model.title + '.png')
+    impath = './' + 'img_' + folder_name + '/'
+    if not os.path.isdir(impath):
+        os.makedirs(impath)
+    plt.savefig(impath + 'acc_plot_' + model.title + '.png')
     #plt.show()
     plt.clf()
     
