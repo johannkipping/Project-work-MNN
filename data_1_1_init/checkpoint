@@ -1,0 +1,2 @@
+model_checkpoint_path: "Known_data_model"
+all_model_checkpoint_paths: "Known_data_model"
