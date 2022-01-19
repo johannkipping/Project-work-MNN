@@ -58,7 +58,7 @@ class InitModel(tfk.Model):
         # using layers you previously defined (in `__init__`).
         x = self.conv2d(inputs)
         x = self.max_pooling2d(x)
-        x = self.conv2d_1(inputs)
+        x = self.conv2d_1(x)
         x = self.max_pooling2d_1(x)
         x = self.flatten(x)
         x = self.dense(x)
