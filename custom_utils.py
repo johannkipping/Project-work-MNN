@@ -6,13 +6,13 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
 
 
-def train_and_evaluate(model, bs=128, ep=10, train_images=None, train_labels=None, test_images=None, test_labels=None):
+def train_and_evaluate(model, batch_size=128, epochs=10, train_images=None, train_labels=None, test_images=None, test_labels=None):
     start = time()
     history = model.fit(
           train_images,
           train_labels,
-          batch_size=bs,
-          epochs=ep,
+          batch_size=batch_size,
+          epochs=epochs,
           validation_data=(test_images, test_labels)
     )
     train_time = time() - start
@@ -28,7 +28,7 @@ def train_and_evaluate(model, bs=128, ep=10, train_images=None, train_labels=Non
 
     plt.plot(history.history['acc'], label='accuracy')
     plt.plot(history.history['val_acc'], label = 'val_accuracy')
-    plt.title(model.name + 'with batch size: ' + bs + ' ') 
+    plt.title(model.name + 'with batch size: ' + batch_size + ' ') 
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
     plt.ylim([0, 1])

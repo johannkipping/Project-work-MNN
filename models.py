@@ -1,7 +1,7 @@
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
-import tensorflow.compat.v1  as tf
+import tensorflow  as tf
 
 class InitModel(tfk.Model):
     """Model from Exercise 4 of sheet 6"""
