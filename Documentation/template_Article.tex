@@ -26,11 +26,17 @@ Things that could be done on Fashion-MNIST
 \end{itemize}
 \end{abstract}
 
+\section*{Section 0: Getting TF to run with a graphics card with compute capability of 3.0}
+As this is a documentation of work this will be included here as it took a lot of time
+
 \section{Idea collection and planning}
+This chapter aims to collect ideas to most of the topics that were discussed in the lecture and continues to formulate a plan on how to tackle them in this project work.
+
+\label{ideas}
 Loss functions used is categorical cross entropy. Why not Mean squared or something else
 
 \textbf{Hyperparameters:}\\
-Idea: For every test, do several choices of hyperparameters to get a feel for the choices\\
+Idea: Try several choices of hyperparameters to get a feel for the effects. Do this in a grid-like fashion.\\
 \\
 \textbf{Activation functions / network structure}\\
 Idea: Test small network structures (fast trainable) for effect of structural changes and different choices of activation functions using knowledge from the lecture and Exercise 4 from sheet 6 as starting point for network evaluation.\\
@@ -47,6 +53,30 @@ Idea: Test for overfitting and generalization with own pictures (for fun). Maybe
 \textbf{FFT/im2col/Winograd}\\
 Idea: Let tensorflow decide on the usage of different approaches as insight was achieved in the exercises and modifications are not cheap.\\
 \\
+\textbf{Attribution/Feature Visualization}\\
+Idea: Visualize the computed nets feature maps.\\
+\\
 
 Progress will be documented with screenshots of the console and explanation. Graphs will be used.
+
+\section{Getting to know Neural Networks}
+This section will describe the first set of investigative experiments. Mainly regarding stuff of the first couple of lectures its main aim is to allow to get an understanding and feeling for the behavior of Neural Networks.
+
+\subsection{Starting out}
+As a starting point the network structure from Exercise 4 of sheet 6 was chosen to allow further investigation. As described in section \ref{ideas} Adam was be used as the optimizer throughout this section in order to reduce complexity.
+
+\subsection{Initialization experiments}
+The first 
+
+\subsection{Network structure}
+\subsection{Hyperparameters}
+
+
+\section{Regularization and Attribution}
+Check for generality and attribute in the same step by using an image from the test set and an image that was taken by me\\
+\\
+Using gradient tape -> saliency map\\
+Global average pooling -> class activation map\\
+Grad-CAM! am ehesten
+
 \end{document}

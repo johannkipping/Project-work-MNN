@@ -1,5 +1,8 @@
 import numpy             as np
 import matplotlib.pyplot as plt
+
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
 
 from random import randrange
