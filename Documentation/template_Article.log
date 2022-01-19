@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021 - Flatpak) (preloaded format=pdflatex 2021.10.11)  19 JAN 2022 15:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021 - Flatpak) (preloaded format=pdflatex 2021.10.11)  19 JAN 2022 20:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -23,124 +23,236 @@ File: size10.clo 2020/04/10 v1.4m Standard LaTeX file (size option)
 \belowcaptionskip=\skip48
 \bibindent=\dimen138
 )
+(/app/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2020/09/09 v1.2b Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/app/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks15
+)
+(/app/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2020/08/30 v1.4c Standard LaTeX Graphics (DPC,SPQR)
+
+(/app/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(/app/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 105.
+
+(/app/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen139
+\Gin@req@width=\dimen140
+)
+(/app/texlive/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2020/10/07 v1.3j Sub-captions (AR)
+
+(/app/texlive/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2020/10/26 v3.5g Customizing captions (AR)
+
+(/app/texlive/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2020/10/21 v2.2e caption3 kernel (AR)
+\captionmargin=\dimen141
+\captionmargin@=\dimen142
+\captionwidth=\dimen143
+\caption@tempdima=\dimen144
+\caption@indent=\dimen145
+\caption@parindent=\dimen146
+\caption@hangindent=\dimen147
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count187
+\c@continuedfloat=\count188
+)
+\c@subfigure=\count189
+\c@subtable=\count190
+)
 (/app/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count187
+\l__color_backend_stack_int=\count191
 \l__pdf_internal_box=\box47
 )
-(./template_Article.aux)
+(./template_Article.aux
+
+LaTeX Warning: Label `fig:sfig2' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:sfig2' multiply defined.
+
+)
 \openout1 = `template_Article.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+ (/app/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count192
+\scratchdimen=\dimen148
+\scratchbox=\box48
+\nofMPsegments=\count193
+\nofMParguments=\count194
+\everyMPshowfont=\toks16
+\MPscratchCnt=\count195
+\MPscratchDim=\dimen149
+\MPnumerator=\count196
+\makeMPintoPDFobject=\count197
+\everyMPtoPDFconversion=\toks17
+) (/app/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/app/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 9.
+(Font)              <12> on input line 12.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 9.
+(Font)              <8> on input line 12.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 9.
+(Font)              <6> on input line 12.
 
-Underfull \hbox (badness 10000) in paragraph at lines 12--15
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 34--59
+Underfull \hbox (badness 10000) in paragraph at lines 15--18
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 34--59
+Underfull \hbox (badness 10000) in paragraph at lines 37--62
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 34--59
+Underfull \hbox (badness 10000) in paragraph at lines 37--62
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 34--59
+Underfull \hbox (badness 10000) in paragraph at lines 37--62
 
  []
 
 
-Overfull \hbox (67.07478pt too wide) in paragraph at lines 34--59
+Underfull \hbox (badness 10000) in paragraph at lines 37--62
+
+ []
+
+
+Overfull \hbox (67.07478pt too wide) in paragraph at lines 37--62
 \OT1/cmr/m/n/10 Idea: Ver-ify the va-lid-ity of the three ap-proaches dis-cusse
 d in the lec-ture. (Zero/Random/Known
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 34--59
+Underfull \hbox (badness 10000) in paragraph at lines 37--62
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 34--59
+Underfull \hbox (badness 10000) in paragraph at lines 37--62
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 34--59
+Underfull \hbox (badness 10000) in paragraph at lines 37--62
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 34--59
+Underfull \hbox (badness 10000) in paragraph at lines 37--62
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 34--59
+Underfull \hbox (badness 10000) in paragraph at lines 37--62
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 34--59
+Underfull \hbox (badness 10000) in paragraph at lines 37--62
 
  []
 
 [1
 
 {/app/texlive/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}] [2]
-Underfull \hbox (badness 10000) in paragraph at lines 76--81
+<../img_1_1_init/acc_plot_Zero_model.png, id=18, 462.528pt x 346.896pt>
+File: ../img_1_1_init/acc_plot_Zero_model.png Graphic file (type png)
+<use ../img_1_1_init/acc_plot_Zero_model.png>
+Package pdftex.def Info: ../img_1_1_init/acc_plot_Zero_model.png  used on input
+ line 90.
+(pdftex.def)             Requested size: 103.50105pt x 77.62477pt.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 93.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 93.
+<../img_1_1_init/acc_plot_Random_model.png, id=20, 462.528pt x 346.896pt>
+File: ../img_1_1_init/acc_plot_Random_model.png Graphic file (type png)
+<use ../img_1_1_init/acc_plot_Random_model.png>
+Package pdftex.def Info: ../img_1_1_init/acc_plot_Random_model.png  used on inp
+ut line 96.
+(pdftex.def)             Requested size: 103.50105pt x 77.62477pt.
+<../img_1_1_init/acc_plot_Known_data_model.png, id=21, 462.528pt x 346.896pt>
+File: ../img_1_1_init/acc_plot_Known_data_model.png Graphic file (type png)
+<use ../img_1_1_init/acc_plot_Known_data_model.png>
+Package pdftex.def Info: ../img_1_1_init/acc_plot_Known_data_model.png  used on
+ input line 102.
+(pdftex.def)             Requested size: 103.50105pt x 77.62477pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 115--120
 
  []
 
-[3] (./template_Article.aux) ) 
+[3] [4 <../img_1_1_init/acc_plot_Zero_model.png> <../img_1_1_init/acc_plot_Rand
+om_model.png> <../img_1_1_init/acc_plot_Known_data_model.png>]
+(./template_Article.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 417 strings out of 478994
- 7248 string characters out of 5859688
- 298884 words of memory out of 5000000
- 17969 multiletter control sequences out of 15000+600000
- 408975 words of font info for 45 fonts, out of 8000000 for 9000
+ 2545 strings out of 478994
+ 44090 string characters out of 5859688
+ 338435 words of memory out of 5000000
+ 20047 multiletter control sequences out of 15000+600000
+ 409310 words of font info for 46 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 44i,6n,50p,553b,228s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/app/texlive/texmf-dist/fonts/enc/dvips/cm-super
-/cm-super-ts1.enc}</app/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx1
-0.pfb></app/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></app/
-texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></app/texlive/texmf
--dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></app/texlive/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmr12.pfb></app/texlive/texmf-dist/fonts/type1/public/a
-msfonts/cm/cmr17.pfb></app/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-r9.pfb></app/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></app
-/texlive/texmf-dist/fonts/type1/public/cm-super/sfrm0900.pfb>
-Output written on template_Article.pdf (3 pages, 123794 bytes).
+ 69i,7n,77p,553b,440s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/app/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</app/texl
+ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></app/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmbx12.pfb></app/texlive/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmbx9.pfb></app/texlive/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmr10.pfb></app/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr1
+2.pfb></app/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></app/t
+exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></app/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmti10.pfb></app/texlive/texmf-dist/fonts/ty
+pe1/public/cm-super/sfrm0900.pfb></app/texlive/texmf-dist/fonts/type1/public/cm
+-super/sfrm1000.pfb>
+Output written on template_Article.pdf (4 pages, 191063 bytes).
 PDF statistics:
- 51 PDF objects out of 1000 (max. 8388607)
- 36 compressed objects within 1 object stream
+ 65 PDF objects out of 1000 (max. 8388607)
+ 42 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

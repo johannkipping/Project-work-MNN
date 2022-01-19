@@ -1,5 +1,8 @@
 \documentclass[]{article}
 
+\usepackage{graphicx}
+\usepackage{subcaption}
+
 %opening
 \title{Project Documentation for \\Mathematics of Neural Networks}
 \author{Johann Kipping}
@@ -54,7 +57,7 @@ Idea: Test for overfitting and generalization with own pictures (for fun). Maybe
 Idea: Let tensorflow decide on the usage of different approaches as insight was achieved in the exercises and modifications are not cheap.\\
 \\
 \textbf{Attribution/Feature Visualization}\\
-Idea: Visualize the computed nets feature maps by using Saliency maps and grad-Cam. Try out deconvolution/guided backpropagation (DeconvNet) if possible! Relu has to be used!\\
+Idea: Visualize the computed nets feature maps by using Saliency maps and grad-Cam. Try out deconvolution/guided backpropagation (DeconvNet) if possible! Relu has to be used! \\
 \\
 
 Progress will be documented with screenshots of the console and explanation. Graphs will be used.
@@ -80,6 +83,29 @@ As expected little to no improvement can be seen from training.
 The baseline performance seen in the exercise. Uniform he initializer was used.
 \subsubsection{Known data initialization}
 This method allow the last two dense layers for classification to be further trained. This improved the networks performance for the training data, not for the test data
+
+\begin{figure}[h!]
+	\begin{subfigure}{.3\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{../img_1_1_init/acc_plot_Zero_model.png}
+		\caption{1a}
+		\label{fig:sfig1}
+	\end{subfigure}%
+	\begin{subfigure}{.3\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{../img_1_1_init/acc_plot_Random_model}
+		\caption{1b}
+		\label{fig:sfig2}
+	\end{subfigure}
+	\begin{subfigure}{.3\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{../img_1_1_init/acc_plot_Known_data_model}
+		\caption{1b}
+		\label{fig:sfig2}
+	\end{subfigure}
+	\caption{plots of....}
+	\label{fig:fig}
+\end{figure}
 
 \subsection{Network structure}
 \subsection{Hyperparameters}
