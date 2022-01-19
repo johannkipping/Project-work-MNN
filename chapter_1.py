@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
+#import tensorflow.compat.v1  as tf
+#from tensorflow import keras
 
 from random import randrange
 from time   import time      # For time measuring
