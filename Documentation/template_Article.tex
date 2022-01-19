@@ -54,7 +54,7 @@ Idea: Test for overfitting and generalization with own pictures (for fun). Maybe
 Idea: Let tensorflow decide on the usage of different approaches as insight was achieved in the exercises and modifications are not cheap.\\
 \\
 \textbf{Attribution/Feature Visualization}\\
-Idea: Visualize the computed nets feature maps.\\
+Idea: Visualize the computed nets feature maps by using Saliency maps and grad-Cam. Try out deconvolution/guided backpropagation (DeconvNet) if possible! Relu has to be used!\\
 \\
 
 Progress will be documented with screenshots of the console and explanation. Graphs will be used.
@@ -75,7 +75,11 @@ The methods for initializations are to be tested in this section:
 As mentioned before the net structure used for this will be structure from Exercise 4 of sheet 6.\\
 The random initialization will be employed before the known data approach as the results from the random initialization will be used as the known data.
 \subsubsection{Zero initialization}
-
+As expected little to no improvement can be seen from training.
+\subsubsection{Random initialization}
+The baseline performance seen in the exercise. Uniform he initializer was used.
+\subsubsection{Known data initialization}
+This method allow the last two dense layers for classification to be further trained. This improved the networks performance for the training data, not for the test data
 
 \subsection{Network structure}
 \subsection{Hyperparameters}
