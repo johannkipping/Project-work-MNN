@@ -82,4 +82,4 @@ random_model.compile(
       metrics=['accuracy']
 )
 
-train_and_evaluate(random_model, folder_name='1_1_init', **train_param_dict, **data_dict)
+train_and_evaluate(random_model, folder_name='data_1_1_init', **train_param_dict, **data_dict)

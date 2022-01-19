@@ -37,7 +37,11 @@ def train_and_evaluate(
 
     plt.plot(history.history['acc'], label='accuracy')
     plt.plot(history.history['val_acc'], label = 'val_accuracy')
-    plt.title(model.title + ' with batch size: ' + str(batch_size) + ' ') 
+    plt.title(
+        model.title + 'with batch size: ' + str(batch_size) + '\n' 
+        + 'Training time: ' + str(round(train_time,2))
+        + ' test accuracy: ' + str(round(test_acc,2))
+    )
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
     plt.ylim([0, 1])
@@ -45,3 +49,5 @@ def train_and_evaluate(
     plt.savefig('./' + folder_name + '/' + 'acc_plot_' + model.title + '.png')
     #plt.show()
     plt.clf()
+    
+    print('\n\n')
