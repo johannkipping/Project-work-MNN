@@ -26,15 +26,15 @@ Things that could be done on Fashion-MNIST
 \end{itemize}
 \end{abstract}
 
-\section*{Section 0: Getting TF to run with a graphics card with compute capability of 3.0}
-As this is a documentation of work this will be included here as it took a lot of time
+\section*{0\quad Getting TF to run with a GPU with CUDA CC of 3.0}
+As this is a documentation of work it will be mentioned that a significant amount of time needed for the setup of computations was put into getting tensorflow to compute on the available GPU (Geforce 660 Ti). The major obstacle was the fact that this particular GPU has a \textit{CUDA compute capability} of 3.0. The least tensorflow supports as of now is 3.5. This lead to the necessity of \textbf{downgrading to tensorflow version 1.12}. This might impede the ability for coverage of advanced topics.
 
 \section{Idea collection and planning}
-This chapter aims to collect ideas to most of the topics that were discussed in the lecture and continues to formulate a plan on how to tackle them in this project work.
-
 \label{ideas}
-Loss functions used is categorical cross entropy. Why not Mean squared or something else
-
+This chapter aims to collect ideas to most of the topics that were discussed in the lecture and continues to formulate a plan on how to tackle them in this project work.\\
+\\
+Loss functions used is categorical cross entropy. Why not Mean squared or something else\\
+\\
 \textbf{Hyperparameters:}\\
 Idea: Try several choices of hyperparameters to get a feel for the effects. Do this in a grid-like fashion.\\
 \\
