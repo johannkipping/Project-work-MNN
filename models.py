@@ -8,7 +8,6 @@ class InitModel(tfk.Model):
     def __init__(
             self,
             name='init_model',
-            input_shape=None,
             num_classes=10,
             activation='relu',
             initializer='he_uniform',
@@ -17,8 +16,9 @@ class InitModel(tfk.Model):
         super(InitModel, self).__init__(
             name=name
         )
+        self.title = name
         self.num_classes = num_classes
-        self.optimizer = tfk.optimizers.Adam(eta)
+        self.optimizer = tf.train.AdamOptimizer(eta)
 
         # layers of the network
         self.conv2d = tfk.layers.Conv2D(

@@ -40,7 +40,7 @@ data_dict = {
 model_param_dict = {
       'activation': 'relu',
       'initializer': 'zeros',
-      'input_shape': (28,28,1),
+      #'input_shape': (28,28,1),
       'num_classes': 10,
       'eta': 0.001
 }
@@ -75,7 +75,7 @@ train_and_evaluate(random_model, **train_param_dict, **data_dict)
 
 for layer in random_model.layers[:-2]:
       layer.trainable = False
-random_model.name = 'Known_data_model'
+random_model.title = 'Known_data_model'
 random_model.compile(
       optimizer=random_model.optimizer, 
       loss='categorical_crossentropy',

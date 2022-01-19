@@ -17,7 +17,7 @@ def train_and_evaluate(model, batch_size=128, epochs=10, train_images=None, trai
     )
     train_time = time() - start
 
-    model.save_weights('./data_1_1_init/' + model.name)
+    model.save_weights('./data_1_1_init/' + model.title)
 
     model.summary()
 
@@ -28,11 +28,11 @@ def train_and_evaluate(model, batch_size=128, epochs=10, train_images=None, trai
 
     plt.plot(history.history['acc'], label='accuracy')
     plt.plot(history.history['val_acc'], label = 'val_accuracy')
-    plt.title(model.name + 'with batch size: ' + batch_size + ' ') 
+    plt.title(model.title + ' with batch size: ' + str(batch_size) + ' ') 
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
     plt.ylim([0, 1])
     plt.legend(loc='lower right')
-    plt.savefig('acc_plot_' + model.name + '.png')
+    plt.savefig('acc_plot_' + model.title + '.png')
     #plt.show()
     plt.clf()
