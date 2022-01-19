@@ -26,7 +26,7 @@ def train_and_evaluate(
     )
     train_time = time() - start
 
-    model.save_weights('./' + folder_name + '/' + model.title)
+    model.save_weights('./' + 'weights_' + folder_name + '/' + model.title)
 
     model.summary()
 
@@ -46,7 +46,7 @@ def train_and_evaluate(
     plt.ylabel('Accuracy')
     plt.ylim([0, 1])
     plt.legend(loc='lower right')
-    plt.savefig('./' + folder_name + '/' + 'acc_plot_' + model.title + '.png')
+    plt.savefig('./' + 'img_' + folder_name + '/' + 'acc_plot_' + model.title + '.png')
     #plt.show()
     plt.clf()
     
