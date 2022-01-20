@@ -1,6 +1,5 @@
 from time   import time      # For time measuring
 import warnings
-import os
 
 import matplotlib.pyplot as plt
 warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -15,7 +14,6 @@ def train_and_evaluate(
         train_labels=None,
         test_images=None,
         test_labels=None,
-        folder_name='None'
     ):
     start = time()
     history = model.fit(
@@ -36,24 +34,19 @@ def train_and_evaluate(
     print('Test accuracy = ', test_acc)
     print('Time needed for training: ', train_time)
 
-    plt.plot(history.history['acc'], label='accuracy')
-    plt.plot(history.history['val_acc'], label = 'val_accuracy')
+    plt.plot(history.history['acc'], label='acc_'+model.title)
+    plt.plot(history.history['val_acc'], label = 'val_accuracy'+model.title)
     plt.title(
         model.title + ' with epochs ' + str(epochs) + '\n' 
         + 'Batch size: ' + str(batch_size) 
         + '  learning rate: ' + str(model.learning_rate) + '\n'
-        + 'Train time: ' + str(round(train_time,2))
-        + '  test accuracy: ' + str(round(test_acc,2))
+        + 'Time: ' + str(round(train_time,1))
+        + '  acc.: ' + str(round(history.history['acc'][-1],2))
+        + '  test acc.: ' + str(round(test_acc,2))
     )
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
     plt.ylim([0, 1])
     plt.legend(loc='lower right')
-    impath = './' + 'img_' + folder_name + '/'
-    if not os.path.isdir(impath):
-        os.makedirs(impath)
-    plt.savefig(impath + 'acc_plot_' + model.title + '.png')
-    #plt.show()
-    plt.clf()
     
     print('\n\n')

@@ -1,10 +1,12 @@
 import warnings
 
 import numpy             as np
+import os
 warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
+import matplotlib.pyplot as plt
 
-from models import WideModel
+from models import FlatModel
 from custom_utils import train_and_evaluate
 
 # Load and reformat Fashion MNIST dataset 
@@ -22,6 +24,10 @@ test_images = test_images / 255.0
 train_labels = tfk.utils.to_categorical(train_labels)
 test_labels = tfk.utils.to_categorical(test_labels)
 
+impath = './img_1_3_structure/'
+if not os.path.isdir(impath):
+    os.makedirs(impath)
+
 # data will be same for all nets
 data_dict = {
       'train_images': train_images,
@@ -37,7 +43,7 @@ train_param_dict = {
 }
               
 # compilation of model
-model = WideModel()
+model = FlatModel(neurons=256, name='flat_256')
 model.compile(
       optimizer=model.optimizer, 
       loss='categorical_crossentropy',
@@ -46,7 +52,22 @@ model.compile(
 
 train_and_evaluate(
       model,
-      folder_name='1_3_structure',
       **train_param_dict,
       **data_dict
 )
+
+model = FlatModel(neurons=16384, name='flat_16384')
+model.compile(
+      optimizer=model.optimizer, 
+      loss='categorical_crossentropy',
+      metrics=['accuracy']
+)
+
+train_and_evaluate(
+      model,
+      **train_param_dict,
+      **data_dict
+)
+
+plt.savefig(impath + 'acc_plot_' + model.title + '.png')
+plt.clf()
