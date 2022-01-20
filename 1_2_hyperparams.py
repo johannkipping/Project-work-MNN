@@ -39,19 +39,19 @@ train_param_dict = {
 # Set up hyperparameters and model parameters
 model_param_dict = {
       'activation': 'relu',
-      'initializer': 'zeros',
-      #'input_shape': (28,28,1),
+      'initializer': 'he_uniform',
       'num_classes': 10,
-      'eta': 0.1
+      'eta': 0.01
 }
 
-batch_sizes = [32,64,128]
+batch_sizes = [64, 128, 256]
 learning_rates = [0.01, 0.001, 0.0001]
 
 for epochs in [5,20]:
       for bs in batch_sizes:
             for eta in learning_rates:
                   train_param_dict['batch_size'] = bs
+                  train_param_dict['epochs'] = epochs
                   model_param_dict['eta'] = eta
 
                   name = 'Model_' + str(bs) + '_' + str(eta) + '_' + str(epochs)

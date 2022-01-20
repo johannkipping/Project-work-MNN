@@ -40,7 +40,6 @@ data_dict = {
 model_param_dict = {
       'activation': 'relu',
       'initializer': 'zeros',
-      #'input_shape': (28,28,1),
       'num_classes': 10,
       'eta': 0.001
 }
