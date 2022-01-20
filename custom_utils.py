@@ -41,7 +41,7 @@ def train_and_evaluate(
     plt.title(
         model.title + ' with epochs ' + str(epochs) + '\n' 
         + 'Batch size: ' + str(batch_size) 
-        + '  learning rate: ' + str(model.learning_rate)
+        + '  learning rate: ' + str(model.learning_rate) + '\n'
         + 'Train time: ' + str(round(train_time,2))
         + '  test accuracy: ' + str(round(test_acc,2))
     )

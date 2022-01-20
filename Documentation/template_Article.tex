@@ -3,12 +3,16 @@
 \usepackage[a4paper, margin=1.5cm]{geometry}
 
 \usepackage{graphicx}
-\usepackage{subcaption}
+%\usepackage{subcaption}
 \usepackage{array}
 \usepackage{tabularx}
 \usepackage{booktabs}
-\usepackage{multicol}
+\usepackage{multicol,caption}
 \setlength{\columnsep}{1cm}
+
+\newenvironment{Figure}
+{\par\medskip\noindent\minipage{\linewidth}}
+{\endminipage\par\medskip}
 
 %opening
 \title{Project Documentation for \\Mathematics of Neural Networks}
@@ -89,61 +93,61 @@ As mentioned before the net structure used for this will be structure from Exerc
 The random initialization will be employed before the known data approach as the results from the random initialization will be used as the known data.
 \subsubsection{Zero initialization}
 As expected little to no improvement can be seen from training.
+\begin{Figure}
+	\label{fig:zero_init}
+	\centering
+	\includegraphics[width=\linewidth]{../img_1_1_init/acc_plot_Zero_model}
+	\captionof{figure}{}
+\end{Figure}
+
+
 \subsubsection{Random initialization}
 The baseline performance seen in the exercise. Uniform he initializer was used.
+\begin{Figure}
+	\label{fig:random_init}
+	\centering
+	\includegraphics[width=\linewidth]{../img_1_1_init/acc_plot_Random_model}
+	\captionof{figure}{}
+\end{Figure}
+
 \subsubsection{Known data initialization}
 This method allow the last two dense layers for classification to be further trained. This improved the networks performance for the training data, not for the test data
+\begin{Figure}
+	\label{fig:known_init}
+	\centering
+	\includegraphics[width=\linewidth]{../img_1_1_init/acc_plot_Known_data_model}
+	\captionof{figure}{}
+\end{Figure}
 
-\begin{figure}[h!]
-	\begin{subfigure}{.3\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{../img_1_1_init/acc_plot_Zero_model.png}
-		\caption{1a}
-		\label{fig:sfig1}
-	\end{subfigure}%
-	\begin{subfigure}{.3\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{../img_1_1_init/acc_plot_Random_model}
-		\caption{1b}
-		\label{fig:sfig2}
-	\end{subfigure}
-	\begin{subfigure}{.3\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{../img_1_1_init/acc_plot_Known_data_model}
-		\caption{1b}
-		\label{fig:sfig2}
-	\end{subfigure}
-	\caption{plots of....}
-	\label{fig:fig}
-\end{figure}
 The resulting argument to be made is that form now on random initialization will be used due to lacking of known data. Zero initialization is not to be used.
 
 \subsection{Hyperparameters for baseline network}
+\label{hyperparams}
 The hyperparameters for the fixed network structure of the baseline network with Adam as a fixed optimizer are batch size, epochs, learning rate, activation functions and initializers. The latter two have been or will be examined at another point in this documentation. In the following part a small grid-like search is employed.\\
 \\
 \begin{centering}
 	\begin{tabular}{c c c c}
 		%\toprule[2pt]
-		 & 32 & 64 & 128 \\
+		 & 64 & 128 & 256 \\
 		\toprule[2pt]
-		0.1 & x  & x & x \\
+		.01 & 0.91  & 0.87 & 0.1 \\
 		\midrule[0.2pt]
-		0.01 & x  & x & x \\
+		.001 & 0.91  & 0.91 & 0.9 \\
 		\midrule[0.2pt]
-		0.001 & x  & x & x \\
+		.0001 & 0.89  & 0.89 & 0.88 \\
 		\bottomrule[2pt]\\
 		\multicolumn{4}{c}{Epochs: 5}
 	\end{tabular}
 	\hfill
 	\begin{tabular}{c c c c}
 		%\toprule[2pt]
-		& 32 & 64 & 128 \\
+		& 64 & 128 & 256 \\
 		\toprule[2pt]
-		0.1 & x  & x & x \\
+		.01 & 0.1  & 0.87 & 0.1 \\
 		\midrule[0.2pt]
-		0.01 & x  & x & x \\
+		.001 & 0.92  & 0.91 & 0.91 \\
 		\midrule[0.2pt]
-		0.001 & x  & x & x \\
+		.0001 & 0.91  & 0.9 & 0.9 \\
 		\bottomrule[2pt]\\
 		\multicolumn{4}{c}{Epochs: 20}
 	\end{tabular}
@@ -153,7 +157,17 @@ Different training times\\
 Curve appearance/saturation
 
 \subsection{Network structure}
+The goal with changing network structure is to achieve better approximation of the wanted function. In this section three different approaches are chosen to try to increase performance. \\
+\begin{enumerate}
+	\item Increasing the number of neurons/filters motivated by the universal approximation theorem.
+	\item Going deeper: allow for more steps of abstraction by increasing the numer of layers.
+	\item Combining previous approaches and testing performance for different activation functions.
+\end{enumerate}
+The starting point for the hyperparameters will be those taken from section \ref{hyperparams}.
 
+\subsubsection{UAT: Going wider}
+In trying to reach a higher test accuracy the approach to use more neurons, motivated by the universal approximation theorem was taken.\\
+The structure use in the previous sections was modified to use 4 times the amount of filters for the convolutional layers. The dense layers for classification were left as they were.
 
 \section{Regularization and Attribution}
 Check for generality and attribute in the same step by using an image from the test set and an image that was taken by me\\
