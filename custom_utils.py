@@ -42,11 +42,11 @@ def train_and_evaluate(
     if acc_bool:
         plt.plot(
             history.history['acc'],
-            label='acc. ' + model.title + '  end:' + history.history['_acc'][-1]
+            label='acc. ' + model.title + '  end:' + str(round(history.history['acc'][-1],2))
         )
     plt.plot(
         history.history['val_acc'],
-        label = 'val. acc. ' + model.title + '  end:' + history.history['val_acc'][-1]
+        label = 'val. acc. ' + model.title + '  end:' + str(round(history.history['val_acc'][-1],2))
     )
     
     plt.xlabel('Epoch')

@@ -6,7 +6,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
 import matplotlib.pyplot as plt
 
-from models import DeeperModel
+from models import InitModel, DeeperModel
 from custom_utils import train_and_evaluate
 
 # Load and reformat Fashion MNIST dataset 
@@ -42,22 +42,16 @@ train_param_dict = {
       'batch_size': 128,
       'epochs': 10
 }
+
+model_param_dict = {
+      'activation': 'relu',
+      'initializer': 'he_uniform',
+      'num_classes': 10,
+      'eta': 0.001
+}
               
 # compilation of model
-model = FlatModel(neurons=256, name='flat_256')
-model.compile(
-      optimizer=model.optimizer, 
-      loss='categorical_crossentropy',
-      metrics=['accuracy']
-)
-
-info_str = train_and_evaluate(
-      model,
-      **train_param_dict,
-      **data_dict
-)
-
-model = FlatModel(neurons=16384, name='flat_16384')
+model = InitModel(name='deeper_init', **model_param_dict)
 model.compile(
       optimizer=model.optimizer, 
       loss='categorical_crossentropy',
@@ -68,8 +62,23 @@ info_str = train_and_evaluate(
       model,
       **train_param_dict,
       **data_dict,
-      info_str=info_str
+      acc_bool=True
 )
 
-plt.savefig(impath + 'acc_plot_' + model.title + '.png')
+
+model = DeeperModel(name='deeper_comp', **model_param_dict)
+model.compile(
+      optimizer=model.optimizer, 
+      loss='categorical_crossentropy',
+      metrics=['accuracy']
+)
+
+info_str = train_and_evaluate(
+      model,
+      **train_param_dict,
+      **data_dict,
+      acc_bool=True
+)
+
+plt.savefig(impath + model.title + '.png')
 plt.clf()
