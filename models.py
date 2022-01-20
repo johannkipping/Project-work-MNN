@@ -18,6 +18,7 @@ class InitModel(tfk.Model):
         )
         self.title = name
         self.num_classes = num_classes
+        self.learning_rate = eta
         self.optimizer = tf.train.AdamOptimizer(eta)
 
         # layers of the network
