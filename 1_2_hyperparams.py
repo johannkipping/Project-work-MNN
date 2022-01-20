@@ -1,8 +1,10 @@
 import warnings
 
 import numpy             as np
+import os
 warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
+import matplotlib.pyplot as plt
 
 from models import InitModel
 from custom_utils import train_and_evaluate
@@ -21,6 +23,10 @@ test_images = test_images / 255.0
 
 train_labels = tfk.utils.to_categorical(train_labels)
 test_labels = tfk.utils.to_categorical(test_labels)
+
+impath = './1_2_hyper/'
+if not os.path.isdir(impath):
+    os.makedirs(impath)
 
 # data will be same for all nets
 data_dict = {
@@ -66,7 +72,8 @@ for epochs in [5,20]:
 
                   train_and_evaluate(
                         model,
-                        folder_name='1_2_hyper',
                         **train_param_dict,
                         **data_dict
                   )
+                  plt.savefig(impath + 'acc_plot_' + model.title + '.png')
+                  plt.clf()

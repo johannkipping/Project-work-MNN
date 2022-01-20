@@ -1,8 +1,10 @@
 import warnings
 
 import numpy             as np
+import os
 warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
+import matplotlib.pyplot as plt
 
 from models import InitModel
 from custom_utils import train_and_evaluate
@@ -21,6 +23,10 @@ test_images = test_images / 255.0
 
 train_labels = tfk.utils.to_categorical(train_labels)
 test_labels = tfk.utils.to_categorical(test_labels)
+
+impath = './img_1_1_init/'
+if not os.path.isdir(impath):
+    os.makedirs(impath)
 
 # train parameters and data will be constant for all nets
 train_param_dict = {
@@ -52,33 +58,34 @@ zero_model.compile(
       metrics=['accuracy']
 )
 
-train_and_evaluate(zero_model, folder_name='1_1_init', **train_param_dict, **data_dict)
-
+train_and_evaluate(zero_model, **train_param_dict, **data_dict)
 
 ### He INITIALIZATION
 # Set up hyperparameters and model parameters
 model_param_dict['initializer'] = 'he_uniform'
 
 # compilation of model
-random_model = InitModel('Random_model', **model_param_dict)
+random_model = InitModel('random_model', **model_param_dict)
 random_model.compile(
       optimizer=random_model.optimizer, 
       loss='categorical_crossentropy',
       metrics=['accuracy']
 )
 
-train_and_evaluate(random_model, folder_name='1_1_init', **train_param_dict, **data_dict)
+train_and_evaluate(random_model, **train_param_dict, **data_dict)
 
 ### KNOWN DATA INITIALIZATION
 # Set the all but last two dense layer to be frozen
 
 for layer in random_model.layers[:-2]:
       layer.trainable = False
-random_model.title = 'Known_data_model'
+random_model.title = 'known_data_model'
 random_model.compile(
       optimizer=random_model.optimizer, 
       loss='categorical_crossentropy',
       metrics=['accuracy']
 )
 
-train_and_evaluate(random_model, folder_name='1_1_init', **train_param_dict, **data_dict)
+train_and_evaluate(random_model, **train_param_dict, **data_dict)
+plt.savefig(impath + 'acc_plot_init.png')
+plt.clf()
