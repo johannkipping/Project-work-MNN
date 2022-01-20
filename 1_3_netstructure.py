@@ -6,7 +6,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
 import matplotlib.pyplot as plt
 
-from models import FlatModel
+from models import DeeperModel
 from custom_utils import train_and_evaluate
 
 # Load and reformat Fashion MNIST dataset 
