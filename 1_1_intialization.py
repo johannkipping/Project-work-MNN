@@ -24,6 +24,7 @@ test_images = test_images / 255.0
 train_labels = tfk.utils.to_categorical(train_labels)
 test_labels = tfk.utils.to_categorical(test_labels)
 
+# path were figures will be saved
 impath = './img_1_1_init/'
 if not os.path.isdir(impath):
     os.makedirs(impath)
@@ -51,14 +52,14 @@ model_param_dict = {
 }
 
 # compilation of model
-zero_model = InitModel('Zero_model', **model_param_dict)
+zero_model = InitModel('zero_model', **model_param_dict)
 zero_model.compile(
       optimizer=zero_model.optimizer, 
       loss='categorical_crossentropy',
       metrics=['accuracy']
 )
 
-train_and_evaluate(zero_model, **train_param_dict, **data_dict)
+info_str = train_and_evaluate(zero_model, **train_param_dict, **data_dict, info_str='')
 
 ### He INITIALIZATION
 # Set up hyperparameters and model parameters
@@ -72,7 +73,7 @@ random_model.compile(
       metrics=['accuracy']
 )
 
-train_and_evaluate(random_model, **train_param_dict, **data_dict)
+info_str = train_and_evaluate(random_model, **train_param_dict, **data_dict, info_str=info_str)
 
 ### KNOWN DATA INITIALIZATION
 # Set the all but last two dense layer to be frozen
@@ -86,6 +87,7 @@ random_model.compile(
       metrics=['accuracy']
 )
 
-train_and_evaluate(random_model, **train_param_dict, **data_dict)
+train_and_evaluate(random_model, **train_param_dict, **data_dict, info_str=info_str)
+
 plt.savefig(impath + 'acc_plot_init.png')
 plt.clf()

@@ -24,6 +24,7 @@ test_images = test_images / 255.0
 train_labels = tfk.utils.to_categorical(train_labels)
 test_labels = tfk.utils.to_categorical(test_labels)
 
+# path were figures will be saved
 impath = './1_2_hyper/'
 if not os.path.isdir(impath):
     os.makedirs(impath)
@@ -70,7 +71,7 @@ for epochs in [5,20]:
                         metrics=['accuracy']
                   )
 
-                  train_and_evaluate(
+                  info_str = train_and_evaluate(
                         model,
                         **train_param_dict,
                         **data_dict

@@ -8,6 +8,8 @@ import tensorflow.keras  as tfk
 
 def train_and_evaluate(
         model,
+        acc_bool=False,
+        info_str='',
         batch_size=128,
         epochs=10,
         train_images=None,
@@ -29,24 +31,30 @@ def train_and_evaluate(
 
     model.summary()
 
-    test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
+    # test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
 
-    print('Test accuracy = ', test_acc)
+    print('Accuracy = ', history.history['acc'][-1])
+    print('Validation accuracy = ', history.history['val_acc'[-1]])
     print('Time needed for training: ', train_time)
-
-    plt.plot(history.history['acc'], label='acc_'+model.title)
+    print('\n')
+    
+    # plotting possible for layered pictures
+    if acc_bool:
+        plt.plot(history.history['acc'], label='acc_'+model.title)
     plt.plot(history.history['val_acc'], label = 'val_accuracy'+model.title)
-    plt.title(
-        model.title + ' with epochs ' + str(epochs) + '\n' 
-        + 'Batch size: ' + str(batch_size) 
-        + '  learning rate: ' + str(model.learning_rate) + '\n'
-        + 'Time: ' + str(round(train_time,1))
-        + '  acc.: ' + str(round(history.history['acc'][-1],2))
-        + '  test acc.: ' + str(round(test_acc,2))
-    )
+    
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
     plt.ylim([0, 1])
     plt.legend(loc='lower right')
     
-    print('\n\n')
+    info_str += (
+        model.title 
+        + '_bs: ' + str(batch_size)
+        + '_ep: ' + str(epochs)
+        + '_eta: ' + str(model.learning_rate)
+        + '_t: ' + str(train_time)
+        + '\n'
+    )
+    
+    plt.title(info_str)

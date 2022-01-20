@@ -175,7 +175,7 @@ The structure use in the previous sections was modified to use 4 times the amoun
 \\
 Results did not show a visible improvement in testing accuracy neither for increasing the numer of filter in the convolutional layers nor the dense classification layers. This could indicate overfitting which will be investigated in section \ref{regularization}. A clear bottleneck for computation here was the rather tiny 2 GiB of memory on the GPU.\\
 \\
-To investigate the effects of increasing the number of neurons anyway a network structure with a flattening and one dense hidden layer is chosen and tested for the effect of having more neurons. 
+To investigate the effects of increasing the number of neurons anyway a network structure with a flattening and one dense hidden layer is chosen and tested for the effect of having more neurons. The results show minimal improvement even for 32 times more neurons.
 
 \subsubsection{Going deeper}
 Another trick up the network designers sleeve is making the network deeper. Due to lack of memory the number filters for the baseline model will be halved to enable 
