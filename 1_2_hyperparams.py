@@ -46,7 +46,7 @@ model_param_dict = {
 }
 
 batch_sizes = [32,64,128]
-learning_rates = [0.1, 0.01, 0.001]
+learning_rates = [0.01, 0.001, 0.0001]
 
 for epochs in [5,20]:
       for bs in batch_sizes:
@@ -54,7 +54,7 @@ for epochs in [5,20]:
                   train_param_dict['batch_size'] = bs
                   model_param_dict['eta'] = eta
 
-                  name = 'Model_' + str(bs) + '_' + str(eta)
+                  name = 'Model_' + str(bs) + '_' + str(eta) + '_' + str(epochs)
                   
                   # compilation of model
                   model = InitModel(name, **model_param_dict)

@@ -39,9 +39,10 @@ def train_and_evaluate(
     plt.plot(history.history['acc'], label='accuracy')
     plt.plot(history.history['val_acc'], label = 'val_accuracy')
     plt.title(
-        model.title + ' with \n' 
+        model.title + ' with epochs ' + str(epochs) + '\n' 
         + 'Batch size: ' + str(batch_size) 
-        + '  train time: ' + str(round(train_time,2))
+        + '  learning rate: ' + str(model.optimizer.learning_rate)
+        + 'Train time: ' + str(round(train_time,2))
         + '  test accuracy: ' + str(round(test_acc,2))
     )
     plt.xlabel('Epoch')
