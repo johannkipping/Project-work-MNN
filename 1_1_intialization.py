@@ -87,7 +87,7 @@ random_model.compile(
       metrics=['accuracy']
 )
 
-train_and_evaluate(random_model, **train_param_dict, **data_dict, info_str=info_str)
+info_str = train_and_evaluate(random_model, **train_param_dict, **data_dict, info_str=info_str)
 
 plt.savefig(impath + 'acc_plot_init.png')
 plt.clf()
