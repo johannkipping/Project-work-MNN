@@ -76,6 +76,10 @@ Neuron/Channel/Layer(DeepDream)
 \textbf{Adversarial Attack}\\
 Idea: Use an adversarial attack to trick a net.
 
+\\
+\\
+Everything plot not shown in this documentation will be available in the github project.
+
 \section{Getting to know Neural Networks}
 This section will describe the first set of investigative experiments. Mainly regarding stuff of the first couple of lectures its main aim is to allow to get an understanding and feeling for the behavior of Neural Networks.
 
@@ -167,9 +171,17 @@ The starting point for the hyperparameters will be those taken from section \ref
 
 \subsubsection{UAT: Going wider}
 In trying to reach a higher test accuracy the approach to use more neurons, motivated by the universal approximation theorem was taken.\\
-The structure use in the previous sections was modified to use 4 times the amount of filters for the convolutional layers. The dense layers for classification were left as they were.
+The structure use in the previous sections was modified to use 4 times the amount of filters for the convolutional layers.\\
+\\
+Results did not show a visible improvement in testing accuracy neither for increasing the numer of filter in the convolutional layers nor the dense classification layers. This could indicate overfitting which will be investigated in section \ref{regularization}. A clear bottleneck for computation here was the rather tiny 2 GiB of memory on the GPU.\\
+\\
+To investigate the effects of increasing the number of neurons anyway a network structure with a flattening and one dense hidden layer is chosen and tested for the effect of having more neurons. 
+
+\subsubsection{Going deeper}
+Another trick up the network designers sleeve is making the network deeper. Due to lack of memory the number filters for the baseline model will be halved to enable 
 
 \section{Regularization and Attribution}
+\label{regularization}
 Check for generality and attribute in the same step by using an image from the test set and an image that was taken by me\\
 \\
 Using gradient tape -> saliency map\\

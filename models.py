@@ -84,7 +84,7 @@ class WideModel(tfk.Model):
             initializer='he_uniform',
             eta=0.001
         ):
-        super(InitModel, self).__init__(
+        super(WideModel, self).__init__(
             name=name
         )
         self.title = name
