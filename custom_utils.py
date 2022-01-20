@@ -34,14 +34,20 @@ def train_and_evaluate(
     # test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
 
     print('Accuracy = ', history.history['acc'][-1])
-    print('Validation accuracy = ', history.history['val_acc'[-1]])
+    print('Validation accuracy = ', history.history['val_acc'][-1])
     print('Time needed for training: ', train_time)
     print('\n')
     
     # plotting possible for layered pictures
     if acc_bool:
-        plt.plot(history.history['acc'], label='acc_'+model.title)
-    plt.plot(history.history['val_acc'], label = 'val_accuracy'+model.title)
+        plt.plot(
+            history.history['acc'],
+            label='acc. ' + model.title + '  end:' + history.history['_acc'][-1]
+        )
+    plt.plot(
+        history.history['val_acc'],
+        label = 'val. acc. ' + model.title + '  end:' + history.history['val_acc'][-1]
+    )
     
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
@@ -50,11 +56,13 @@ def train_and_evaluate(
     
     info_str += (
         model.title 
-        + '_bs: ' + str(batch_size)
-        + '_ep: ' + str(epochs)
-        + '_eta: ' + str(model.learning_rate)
-        + '_t: ' + str(train_time)
-        + '\n'
+        + ' bs:' + str(batch_size)
+        + ' ep:' + str(epochs)
+        + ' eta:' + str(model.learning_rate)
+        + ' t:' + str(round(train_time))
+        + 's\n'
     )
     
     plt.title(info_str)
+    
+    return info_str

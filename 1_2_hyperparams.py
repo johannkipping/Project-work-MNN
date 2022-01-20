@@ -25,7 +25,7 @@ train_labels = tfk.utils.to_categorical(train_labels)
 test_labels = tfk.utils.to_categorical(test_labels)
 
 # path were figures will be saved
-impath = './1_2_hyper/'
+impath = './img_1_2_hyper/'
 if not os.path.isdir(impath):
     os.makedirs(impath)
 
@@ -61,7 +61,7 @@ for epochs in [5,20]:
                   train_param_dict['epochs'] = epochs
                   model_param_dict['eta'] = eta
 
-                  name = 'Model_' + str(bs) + '_' + str(eta) + '_' + str(epochs)
+                  name = 'Model' 
                   
                   # compilation of model
                   model = InitModel(name, **model_param_dict)
@@ -76,5 +76,11 @@ for epochs in [5,20]:
                         **train_param_dict,
                         **data_dict
                   )
-                  plt.savefig(impath + 'acc_plot_' + model.title + '.png')
+                  plt.savefig(
+                    impath
+                    + 'acc_plot_'
+                    + str(bs) + '_'
+                    + str(eta) + '_'
+                    + str(epochs)
+                    + '.png')
                   plt.clf()
