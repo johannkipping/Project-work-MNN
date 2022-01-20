@@ -215,29 +215,53 @@ class DeeperModel(tfk.Model):
         self.optimizer = tf.train.AdamOptimizer(eta)
 
         # layers of the network
-        self.conv2d = tfk.layers.Conv2D(
+        self.conv2d1 = tfk.layers.Conv2D(
             32,
             (3,3),
             activation=activation,
-            kernel_initializer=initializer
+            kernel_initializer=initializer,
+            padding='same'
+        )
+        self.conv2d2 = tfk.layers.Conv2D(
+            32,
+            (3,3),
+            activation=activation,
+            kernel_initializer=initializer,
+            padding='same'
         )
 
         self.max_pooling2d = tfk.layers.MaxPool2D(pool_size=(2,2))
 
-        self.conv2d_1 = tfk.layers.Conv2D(
+        self.conv2d_11 = tfk.layers.Conv2D(
             64,
             (3,3),
             activation=activation,
-            kernel_initializer=initializer
+            kernel_initializer=initializer,
+            padding='same'
+        )
+        self.conv2d_12 = tfk.layers.Conv2D(
+            64,
+            (3,3),
+            activation=activation,
+            kernel_initializer=initializer,
+            padding='same'
         )
 
         self.max_pooling2d_1 = tfk.layers.MaxPool2D(pool_size=(2,2))
         
-        self.conv2d_2 = tfk.layers.Conv2D(
-            64,
+        self.conv2d_21 = tfk.layers.Conv2D(
+            128,
             (3,3),
             activation=activation,
-            kernel_initializer=initializer
+            kernel_initializer=initializer,
+            padding='same'
+        )
+        self.conv2d_22 = tfk.layers.Conv2D(
+            128,
+            (3,3),
+            activation=activation,
+            kernel_initializer=initializer,
+            padding='same'
         )
 
         self.max_pooling2d_2 = tfk.layers.MaxPool2D(pool_size=(2,2))
@@ -245,18 +269,12 @@ class DeeperModel(tfk.Model):
         self.flatten = tfk.layers.Flatten()
 
         self.dense = tfk.layers.Dense(
-            2048,
-            activation=activation,
-            kernel_initializer=initializer
-        )
-        
-        self.dense_1 = tfk.layers.Dense(
-            2048,
+            1028,
             activation=activation,
             kernel_initializer=initializer
         )
 
-        self.dense_2 = tfk.layers.Dense(
+        self.dense_1 = tfk.layers.Dense(
             10,
             activation='softmax',
             kernel_initializer=initializer
@@ -265,16 +283,18 @@ class DeeperModel(tfk.Model):
     def call(self, inputs):
         # Define your forward pass here,
         # using layers you previously defined (in `__init__`).
-        x = self.conv2d(inputs)
+        x = self.conv2d1(inputs)
+        x = self.conv2d2(x)
         x = self.max_pooling2d(x)
-        x = self.conv2d_1(x)
+        x = self.conv2d_11(x)
+        x = self.conv2d_12(x)
         x = self.max_pooling2d_1(x)
-        x = self.conv2d_2(inputs)
+        x = self.conv2d_21(x)
+        x = self.conv2d_22(x)
         x = self.max_pooling2d_2(x)
         x = self.flatten(x)
         x = self.dense(x)
-        x = self.dense_1(x)
-        return self.dense_2(x)
+        return self.dense_1(x)
 
     def compute_output_shape(self, input_shape):
         # You need to override this function if you want to use the subclassed model
