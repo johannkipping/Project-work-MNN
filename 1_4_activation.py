@@ -25,7 +25,7 @@ train_labels = tfk.utils.to_categorical(train_labels)
 test_labels = tfk.utils.to_categorical(test_labels)
 
 # path were figures will be saved
-impath = './img_1_4_regular/'
+impath = './img_1_4_activation/'
 if not os.path.isdir(impath):
     os.makedirs(impath)
 
@@ -50,8 +50,22 @@ model_param_dict = {
       'eta': 0.001
 }
 
-
 model = InitModel(name='relu', **model_param_dict)
+model.compile(
+      optimizer=model.optimizer, 
+      loss='categorical_crossentropy',
+      metrics=['accuracy']
+)
+
+info_str = train_and_evaluate(
+      model,
+      **train_param_dict,
+      **data_dict,
+      acc_bool=True
+)
+
+model_param_dict['activation'] = 'elu'
+model = InitModel(name='elu', **model_param_dict)
 model.compile(
       optimizer=model.optimizer, 
       loss='categorical_crossentropy',
@@ -95,21 +109,5 @@ info_str = train_and_evaluate(
       acc_bool=True
 )
 
-model_param_dict['activation'] = 'swish'
-model = InitModel(name='swish', **model_param_dict)
-model.compile(
-      optimizer=model.optimizer, 
-      loss='categorical_crossentropy',
-      metrics=['accuracy']
-)
-
-info_str = train_and_evaluate(
-      model,
-      **train_param_dict,
-      **data_dict,
-      acc_bool=True
-)
-
-
-plt.savefig(impath + 'deeper_dropout_comp.png')
+plt.savefig(impath + 'activation_comp.png')
 plt.clf()
