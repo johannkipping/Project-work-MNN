@@ -169,14 +169,23 @@ Another trick up the network designers sleeve is making the network deeper. As s
 \\
 The next step was then to try the CIFAR-10 dataset with the baseline net and compare the performance to a deeper version of the net. This resulted in a better performance at last but the high difference in the training accuracy and validation accuracy is still observable. This will be tackled by the regularization attempts in the following section.
 
-\subsubsection{Activation functions and cost function}
-At this point it should be investigated why the baseline net contains the activation and cost function it does. To this end the following was modifications were made and analyzed for the effects in training and validation accuracy:\\
+\subsubsection{Activation functions}
+At this point it should be investigated why the baseline net contains the activations it does. To this end the following was modifications were made and analyzed for the effects in training and validation accuracy:\\
 \\
-Use \textbf{least squares} as cost function as this was used in the lectures for the first chapters.\\
-This lead to\\
+Several activation functions were tested for the baseline net to \textbf{replace ReLU}:\\
 \\
-Try several activation functions to \textbf{replace ReLU}\\
-Sigmoid:
+\textbf{Elu}: The exponential ReLU activation performed marginally worse than ReLU in all tests with the baseline net.\\
+\\
+\textbf{Sigmoid}: The sigmoid function showed very low training and validation accuracy although with a monotone increase until the last epoch. The difference of training and validation accuracy was smaller than the other activation functions. \\
+\\
+\textbf{Tanh}: The tangens hyperbolicus outperformed all other functions and will investigated further in later sections.
+
+\begin{Figure}
+	\label{fig:known_init}
+	\centering
+	\includegraphics[width=\linewidth]{../img_1_4_activations/acc_plot_init}
+	\captionof{figure}{}
+\end{Figure}
 
 \section{Regularization}
 \label{regularization}
@@ -189,7 +198,7 @@ Sigmoid:
 	\item Batch normalization -> normalize input to layers
 	\item Dropout (Dropconnect) -> drop output of neurons with probability for each minibatch
 \end{itemize}
-As the previous chapter revealed we.. (Use ReLU and cost to focus on dropout)
+As the previous chapter revealed the 
 
 \subsection{Dying neurons}
 Using leaky ReLU
