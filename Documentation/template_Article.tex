@@ -183,7 +183,7 @@ Several activation functions were tested for the baseline net to \textbf{replace
 \begin{Figure}
 	\label{fig:known_init}
 	\centering
-	\includegraphics[width=\linewidth]{../img_1_4_activations/acc_plot_init}
+	\includegraphics[width=\linewidth]{../img_1_4_activation/activation_comp}
 	\captionof{figure}{}
 \end{Figure}
 
@@ -191,14 +191,14 @@ Several activation functions were tested for the baseline net to \textbf{replace
 \label{regularization}
 \subsection{Possible methods}
 \begin{itemize}
-	\item Depending on the Eigen/Singular Values vanishing/exploding gradients. As ReLU was used this is not regarded as possible.\\
+	\item Depending on the Eigen/Singular Values vanishing/exploding gradients. As ReLU was used this is not regarded as possible.
 	\item Bias very negative -> Dying neurons -> use leaky ReLU.
 	\item Gradient clipping used for keeping out of saturation where gradient is almost zero -> usage of ReLU makes this probable to be unsuccessful
 	\item Tikhonov ($L^{2}$) -> insert penalizing term into minimization to prevent weights getting to large. (Frobenius norm has to be used)
 	\item Batch normalization -> normalize input to layers
 	\item Dropout (Dropconnect) -> drop output of neurons with probability for each minibatch
 \end{itemize}
-As the previous chapter revealed the 
+As the previous chapter revealed the use of ReLU is acceptable for the baseline net with only tanh outperforming ReLU. To reduce the complexity in this section ReLU will thus be used. This renders the problem of vanishing/exploding gradients improbable such that gradient clipping and $L^{2}$ regularization will not be applied. The effects of the remaining methods are explored in the following sections.
 
 \subsection{Dying neurons}
 Using leaky ReLU
@@ -208,6 +208,7 @@ To make the input more readable for the net we normalize each element of the inp
 
 \subsection{Dropout}
 Localized features, more specialized filters
+
 
 \section{Attribution}
 
