@@ -413,7 +413,7 @@ class DropoutModel(tfk.Model):
         return tf.TensorShape(shape)
     
     
-class BatchnormModel(tfk.Model):
+class BatchnormModel_undep(tfk.Model):
     """Model from Exercise 4 of sheet 6"""
     def __init__(
             self,
@@ -423,7 +423,7 @@ class BatchnormModel(tfk.Model):
             initializer='he_uniform',
             eta=0.001
         ):
-        super(InitModel, self).__init__(
+        super(BatchnormModel, self).__init__(
             name=name
         )
         self.title = name
@@ -464,11 +464,11 @@ class BatchnormModel(tfk.Model):
         # Define your forward pass here,
         # using layers you previously defined (in `__init__`).
         x = self.conv2d(inputs)
-        x = self.batchnorm(x)
         x = self.max_pooling2d(x)
+        x = self.batchnorm(x)
         x = self.conv2d_1(x)
-        x = self.batchnorm_1(x)
         x = self.max_pooling2d_1(x)
+        x = self.batchnorm_1(x)
         x = self.flatten(x)
         x = self.dense(x)
         return self.dense_1(x)
@@ -481,4 +481,122 @@ class BatchnormModel(tfk.Model):
         shape[-1] = self.num_classes
         return tf.TensorShape(shape)
 
-    
+   
+class BatchnormModel(tfk.Model):
+    """Model from Exercise 4 of sheet 6"""
+    def __init__(
+            self,
+            name='init_model',
+            num_classes=10,
+            activation='relu',
+            initializer='he_uniform',
+            eta=0.001
+        ):
+        super(BatchnormModel, self).__init__(
+            name=name
+        )
+        self.title = name
+        self.num_classes = num_classes
+        self.learning_rate = eta
+        self.optimizer = tf.train.AdamOptimizer(eta)
+
+        # layers of the network
+        self.conv2d1 = tfk.layers.Conv2D(
+            32,
+            (3,3),
+            activation=activation,
+            kernel_initializer=initializer,
+            padding='same'
+        )
+        self.batchnorm = tfk.layers.BatchNormalization()
+        self.conv2d2 = tfk.layers.Conv2D(
+            32,
+            (3,3),
+            activation=activation,
+            kernel_initializer=initializer,
+            padding='same'
+        )
+        self.batchnorm_1 = tfk.layers.BatchNormalization()
+        self.max_pooling2d = tfk.layers.MaxPool2D(pool_size=(2,2))
+
+        self.conv2d_11 = tfk.layers.Conv2D(
+            64,
+            (3,3),
+            activation=activation,
+            kernel_initializer=initializer,
+            padding='same'
+        )
+        self.batchnorm_2 = tfk.layers.BatchNormalization()
+        self.conv2d_12 = tfk.layers.Conv2D(
+            64,
+            (3,3),
+            activation=activation,
+            kernel_initializer=initializer,
+            padding='same'
+        )
+        self.batchnorm_3 = tfk.layers.BatchNormalization()
+
+        self.max_pooling2d_1 = tfk.layers.MaxPool2D(pool_size=(2,2))
+        
+        self.conv2d_21 = tfk.layers.Conv2D(
+            128,
+            (3,3),
+            activation=activation,
+            kernel_initializer=initializer,
+            padding='same'
+        )
+        self.batchnorm_4 = tfk.layers.BatchNormalization()
+        self.conv2d_22 = tfk.layers.Conv2D(
+            128,
+            (3,3),
+            activation=activation,
+            kernel_initializer=initializer,
+            padding='same'
+        )
+        self.batchnorm_5 = tfk.layers.BatchNormalization()
+        
+        self.max_pooling2d_2 = tfk.layers.MaxPool2D(pool_size=(2,2))
+        
+        self.flatten = tfk.layers.Flatten()
+
+        self.dense = tfk.layers.Dense(
+            1028,
+            activation=activation,
+            kernel_initializer=initializer
+        )
+
+        self.dense_1 = tfk.layers.Dense(
+            10,
+            activation='softmax',
+            kernel_initializer=initializer
+        )
+
+    def call(self, inputs):
+        # Define your forward pass here,
+        # using layers you previously defined (in `__init__`).
+        x = self.conv2d1(inputs)
+        x = self.batchnorm(x)
+        x = self.conv2d2(x)
+        x = self.batchnorm_1(x)
+        x = self.max_pooling2d(x)
+        x = self.conv2d_11(x)
+        x = self.batchnorm_2(x)
+        x = self.conv2d_12(x)
+        x = self.batchnorm_3(x)
+        x = self.max_pooling2d_1(x)
+        x = self.conv2d_21(x)
+        x = self.batchnorm_4(x)
+        x = self.conv2d_22(x)
+        x = self.batchnorm_5(x)
+        x = self.max_pooling2d_2(x)
+        x = self.flatten(x)
+        x = self.dense(x)
+        return self.dense_1(x)
+
+    def compute_output_shape(self, input_shape):
+        # You need to override this function if you want to use the subclassed model
+        # as part of a functional-style model.
+        # Otherwise, this method is optional.
+        shape = tf.TensorShape(input_shape).as_list()
+        shape[-1] = self.num_classes
+        return tf.TensorShape(shape)
