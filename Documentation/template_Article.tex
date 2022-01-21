@@ -74,8 +74,8 @@ Idea: Visualize a net (with more layers) feature maps by using Saliency maps and
 Neuron/Channel/Layer(DeepDream)
 \\
 \textbf{Adversarial Attack}\\
-Idea: Use an adversarial attack to trick a net.
-
+Idea: Use an adversarial attack to trick a net.\\
+\\
 \\
 \\
 Everything plot not shown in this documentation will be available in the github project.
@@ -97,29 +97,16 @@ As mentioned before the net structure used for this will be structure from Exerc
 The random initialization will be employed before the known data approach as the results from the random initialization will be used as the known data.
 \subsubsection{Zero initialization}
 As expected little to no improvement can be seen from training.
-\begin{Figure}
-	\label{fig:zero_init}
-	\centering
-	\includegraphics[width=\linewidth]{../img_1_1_init/acc_plot_Zero_model}
-	\captionof{figure}{}
-\end{Figure}
-
 
 \subsubsection{Random initialization}
 The baseline performance seen in the exercise. Uniform he initializer was used.
-\begin{Figure}
-	\label{fig:random_init}
-	\centering
-	\includegraphics[width=\linewidth]{../img_1_1_init/acc_plot_Random_model}
-	\captionof{figure}{}
-\end{Figure}
 
 \subsubsection{Known data initialization}
 This method allow the last two dense layers for classification to be further trained. This improved the networks performance for the training data, not for the test data
 \begin{Figure}
 	\label{fig:known_init}
 	\centering
-	\includegraphics[width=\linewidth]{../img_1_1_init/acc_plot_Known_data_model}
+	\includegraphics[width=\linewidth]{../img_1_1_init/acc_plot_init}
 	\captionof{figure}{}
 \end{Figure}
 
@@ -178,10 +165,43 @@ Results did not show a visible improvement in testing accuracy neither for incre
 To investigate the effects of increasing the number of neurons anyway a network structure with a flattening and one dense hidden layer is chosen and tested for the effect of having more neurons. The results show minimal improvement even for 32 times more neurons.
 
 \subsubsection{Going deeper}
-Another trick up the network designers sleeve is making the network deeper. Due to lack of memory the number filters for the baseline model will be halved to enable 
+Another trick up the network designers sleeve is making the network deeper. As soon as another network structure was tried out and no improvement was observed a harder dataset had to be consulted as it seemed as though the baseline net was near optimal for Fashion-MNIST in the sense of efficient implementation with the tools at hand in the last couple of sections.\\
+\\
+The next step was then to try the CIFAR-10 dataset with the baseline net and compare the performance to a deeper version of the net. This resulted in a better performance at last but the high difference in the training accuracy and validation accuracy is still observable. This will be tackled by the regularization attempts in the following section.
 
-\section{Regularization and Attribution}
+\subsubsection{Activation functions and cost function}
+At this point it should be investigated why the baseline net contains the activation and cost function it does. To this end the following was modifications were made and analyzed for the effects in training and validation accuracy:\\
+\\
+Use \textbf{least squares} as cost function as this was used in the lectures for the first chapters.\\
+This lead to\\
+\\
+Try several activation functions to \textbf{replace ReLU}\\
+Sigmoid:
+
+\section{Regularization}
 \label{regularization}
+\subsection{Possible methods}
+\begin{itemize}
+	\item Depending on the Eigen/Singular Values vanishing/exploding gradients. As ReLU was used this is not regarded as possible.\\
+	\item Bias very negative -> Dying neurons -> use leaky ReLU.
+	\item Gradient clipping used for keeping out of saturation where gradient is almost zero -> usage of ReLU makes this probable to be unsuccessful
+	\item Tikhonov ($L^{2}$) -> insert penalizing term into minimization to prevent weights getting to large. (Frobenius norm has to be used)
+	\item Batch normalization -> normalize input to layers
+	\item Dropout (Dropconnect) -> drop output of neurons with probability for each minibatch
+\end{itemize}
+As the previous chapter revealed we.. (Use ReLU and cost to focus on dropout)
+
+\subsection{Dying neurons}
+Using leaky ReLU
+
+\subsection{Batch normalization}
+To make the input more readable for the net we normalize each element of the input to every layer to have mean $\mu=0$ and variance $\sigma=1$. To restrict less we learn parameters (linear transformation) $\beta and \gamma$ during backpropagation. Usage of ReLU
+
+\subsection{Dropout}
+Localized features, more specialized filters
+
+\section{Attribution}
+
 Check for generality and attribute in the same step by using an image from the test set and an image that was taken by me\\
 \\
 Using gradient tape -> saliency map\\
