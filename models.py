@@ -312,7 +312,8 @@ class DropoutModel(tfk.Model):
             num_classes=10,
             activation='relu',
             initializer='he_uniform',
-            eta=0.001
+            eta=0.001,
+            drop_prob=0.2
         ):
         super(DeeperModel, self).__init__(
             name=name
@@ -339,6 +340,7 @@ class DropoutModel(tfk.Model):
         )
 
         self.max_pooling2d = tfk.layers.MaxPool2D(pool_size=(2,2))
+        self.dropout = tfk.layers.Dropout(drop_prob)
 
         self.conv2d_11 = tfk.layers.Conv2D(
             64,
@@ -356,6 +358,7 @@ class DropoutModel(tfk.Model):
         )
 
         self.max_pooling2d_1 = tfk.layers.MaxPool2D(pool_size=(2,2))
+        self.dropout_1 = tfk.layers.Dropout(drop_prob)
         
         self.conv2d_21 = tfk.layers.Conv2D(
             128,
@@ -373,6 +376,7 @@ class DropoutModel(tfk.Model):
         )
 
         self.max_pooling2d_2 = tfk.layers.MaxPool2D(pool_size=(2,2))
+        self.dropout_2 = tfk.layers.Dropout(drop_prob)
         
         self.flatten = tfk.layers.Flatten()
 
@@ -381,6 +385,7 @@ class DropoutModel(tfk.Model):
             activation=activation,
             kernel_initializer=initializer
         )
+        self.dropout_3 = tfk.layers.Dropout(drop_prob)
 
         self.dense_1 = tfk.layers.Dense(
             10,
@@ -394,14 +399,18 @@ class DropoutModel(tfk.Model):
         x = self.conv2d1(inputs)
         x = self.conv2d2(x)
         x = self.max_pooling2d(x)
+        x = self.dropout(x)
         x = self.conv2d_11(x)
         x = self.conv2d_12(x)
         x = self.max_pooling2d_1(x)
+        x = self.dropout_1(x)
         x = self.conv2d_21(x)
         x = self.conv2d_22(x)
         x = self.max_pooling2d_2(x)
+        x = self.dropout_2(x)
         x = self.flatten(x)
         x = self.dense(x)
+        x = self.dropout_3(x)
         return self.dense_1(x)
 
     def compute_output_shape(self, input_shape):
@@ -413,7 +422,7 @@ class DropoutModel(tfk.Model):
         return tf.TensorShape(shape)
     
     
-class BatchnormModel_undep(tfk.Model):
+class BatchnormModel_baseline(tfk.Model):
     """Model from Exercise 4 of sheet 6"""
     def __init__(
             self,

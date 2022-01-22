@@ -165,6 +165,7 @@ Results did not show a visible improvement in testing accuracy neither for incre
 To investigate the effects of increasing the number of neurons anyway a network structure with a flattening and one dense hidden layer is chosen and tested for the effect of having more neurons. The results show minimal improvement even for 32 times more neurons.
 
 \subsubsection{Going deeper}
+\label{deeper}
 Another trick up the network designers sleeve is making the network deeper. As soon as another network structure was tried out and no improvement was observed a harder dataset had to be consulted as it seemed as though the baseline net was near optimal for Fashion-MNIST in the sense of efficient implementation with the tools at hand in the last couple of sections.\\
 \\
 The next step was then to try the CIFAR-10 dataset with the baseline net and compare the performance to a deeper version of the net. This resulted in a better performance at last but the high difference in the training accuracy and validation accuracy is still observable. This will be tackled by the regularization attempts in the following section.
@@ -205,16 +206,26 @@ Using leaky ReLU to lower the possibility of neurons ''dying'' resulted in minor
 \begin{Figure}
 	\label{fig:dying}
 	\centering
-	\includegraphics[width=\linewidth]{../img_1_5_regular/acc_plot_init}
+	\includegraphics[width=\linewidth]{../img_1_5_regularization/dying}
 	\captionof{figure}{}
 \end{Figure}
 
 \subsection{Batch normalization}
-To make the input more readable for the net we normalize each element of the input to every layer to have mean $\mu=0$ and variance $\sigma=1$. To restrict less we learn parameters (linear transformation) $\beta and \gamma$ during backpropagation. Usage of ReLU
+To make the input more readable for the net we normalize each element of the input to every layer to have mean $\mu=0$ and variance $\sigma=1$. To restrict less we learn parameters (linear transformation) $\beta and \gamma$ during backpropagation. Usage of ReLU\\
+\\
+For the baseline net the observed improvement was minimal, but for the deeper net from section \ref{deeper} there was a notable improvement especially in the time of convergence.
+
+\begin{Figure}
+	\label{fig:batchnorm}
+	\centering
+	\includegraphics[width=\linewidth]{../img_1_5_regularization/batchnorm_deep}
+	\captionof{figure}{}
+\end{Figure}
 
 \subsection{Dropout}
 Localized features, more specialized filters
 
+\section{Putting it all together}
 
 \section{Attribution}
 
