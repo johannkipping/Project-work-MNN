@@ -6,7 +6,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
 import matplotlib.pyplot as plt
 
-from models import InitModel, BatchnormModel
+from models import InitModel, BatchnormModel, DeeperModel
 from custom_utils import train_and_evaluate
 
 # Load and reformat Fashion MNIST dataset 
@@ -40,7 +40,7 @@ data_dict = {
 # train parameters initialization
 train_param_dict = {
       'batch_size': 128,
-      'epochs': 20
+      'epochs': 10
 }
 
 model_param_dict = {
@@ -50,7 +50,7 @@ model_param_dict = {
       'eta': 0.001
 }
 
-model = InitModel(name='baseline', **model_param_dict)
+model = DeeperModel(name='baseline_deep', **model_param_dict)
 model.compile(
       optimizer=model.optimizer, 
       loss='categorical_crossentropy',
@@ -64,7 +64,7 @@ info_str = train_and_evaluate(
       acc_bool=True
 )
 
-model = BatchnormModel(name='batchnorm', **model_param_dict)
+model = BatchnormModel(name='batchnorm_deep', **model_param_dict)
 model.compile(
       optimizer=model.optimizer, 
       loss='categorical_crossentropy',
@@ -79,5 +79,5 @@ info_str = train_and_evaluate(
 )
 
 
-plt.savefig(impath + 'dying.png')
+plt.savefig(impath + 'batchnorm_deep.png')
 plt.clf()
