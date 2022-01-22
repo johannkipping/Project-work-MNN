@@ -201,7 +201,13 @@ Several activation functions were tested for the baseline net to \textbf{replace
 As the previous chapter revealed the use of ReLU is acceptable for the baseline net with only tanh outperforming ReLU. To reduce the complexity in this section ReLU will thus be used. This renders the problem of vanishing/exploding gradients improbable such that gradient clipping and $L^{2}$ regularization will not be applied. The effects of the remaining methods are explored in the following sections.
 
 \subsection{Dying neurons}
-Using leaky ReLU
+Using leaky ReLU to lower the possibility of neurons ''dying'' resulted in minor improvement as can be seen in figure \ref{fig:dying}
+\begin{Figure}
+	\label{fig:dying}
+	\centering
+	\includegraphics[width=\linewidth]{../img_1_5_regular/acc_plot_init}
+	\captionof{figure}{}
+\end{Figure}
 
 \subsection{Batch normalization}
 To make the input more readable for the net we normalize each element of the input to every layer to have mean $\mu=0$ and variance $\sigma=1$. To restrict less we learn parameters (linear transformation) $\beta and \gamma$ during backpropagation. Usage of ReLU
