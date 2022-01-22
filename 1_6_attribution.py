@@ -10,22 +10,22 @@ from models import FinalModel
 from custom_utils import train_and_evaluate
 
 # Load and reformat Fashion MNIST dataset 
-cifar10 = tfk.datasets.cifar10
-(train_images, train_labels), (test_images, test_labels) = cifar10.load_data()
+fashion_mnist = tfk.datasets.fashion_mnist
+(train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 
 class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
                'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
-#train_images = train_images[:,:,:,np.newaxis]
+train_images = train_images[:,:,:,np.newaxis]
 train_images = train_images / 255.0
-#test_images = test_images[:,:,:,np.newaxis]
+test_images = test_images[:,:,:,np.newaxis]
 test_images = test_images / 255.0
 
-train_labels = tfk.utils.to_categorical(train_labels)
-test_labels = tfk.utils.to_categorical(test_labels)
+#train_labels = tfk.utils.to_categorical(train_labels)
+#test_labels = tfk.utils.to_categorical(test_labels)
 
 # path were figures will be saved
-impath = './img_1_5_regularization/'
+impath = './img_1_6_attribution/'
 if not os.path.isdir(impath):
     os.makedirs(impath)
 
@@ -58,14 +58,9 @@ model.compile(
       metrics=['accuracy']
 )
 
-info_str = train_and_evaluate(
-      model,
-      **train_param_dict,
-      **data_dict,
-      acc_bool=True
-)
+model.load_weights('./final_model_weights_fashion' )
 
-activations = model.predict(test_images[0])
+activations = model.predict(test_images)
 
 plt.figure(figsize=(10,10))
 for i in range(25):
