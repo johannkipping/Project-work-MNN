@@ -315,7 +315,7 @@ class DropoutModel(tfk.Model):
             eta=0.001,
             drop_prob=0.2
         ):
-        super(DeeperModel, self).__init__(
+        super(DropoutModel, self).__init__(
             name=name
         )
         self.title = name
