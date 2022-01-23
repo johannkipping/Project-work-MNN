@@ -620,6 +620,7 @@ class FinalModel(tfk.Model):
             activation='relu',
             initializer='he_uniform',
             eta=0.001,
+            input_shape = (28,28,1),
             drop_prob=0.25
         ):
         super(FinalModel, self).__init__(
@@ -634,6 +635,7 @@ class FinalModel(tfk.Model):
         self.conv2d1 = tfk.layers.Conv2D(
             32,
             (3,3),
+            input_shape=input_shape,
             activation=activation,
             kernel_initializer=initializer,
             padding='same'
