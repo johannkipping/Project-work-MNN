@@ -68,67 +68,94 @@ model.compile(
 model.load_weights('./final_model_weights_fashion')
 
 
-# Layer activation visualization
-layer_outputs = [layer.output for layer in model.layers[:18]]
-activation_model = tfk.models.Model(inputs=model.input, outputs=layer_outputs)
-activations = activation_model.predict(test_images[testim_ind][np.newaxis,:,:,:])
+def calc_loss(img, model):
+    # Pass forward the image through the model to retrieve the activations.
+    # Converts the image into a batch of size 1.
+    img_batch = tf.expand_dims(img, axis=0)
+    layer_activations = model(img_batch)
+    if len(layer_activations) == 1:
+        layer_activations = [layer_activations]
 
-plt.figure(figsize=(10,10))
-plt.title('Max. mean activations')
-for i in range(18):
-    layer_activation = activations[i][0,:,:]
-    max_ac_ind = np.argmax(np.mean(layer_activation, axis=(0,1)))
-    plt.subplot(5,5,i+1)
-    plt.xticks([])
-    plt.yticks([])
-    plt.grid(False)
-    plt.imshow(layer_activation[:,:,max_ac_ind], cmap='viridis')
-    plt.xlabel('Layer ' + str(i))
-plt.show()
+    losses = []
+    for act in layer_activations:
+        loss = tf.math.reduce_mean(act)
+        losses.append(loss)
+
+    return  tf.reduce_sum(losses)
+
+class DeepDream(tf.Module):
+    def __init__(self, model):
+        self.model = model
+
+    @tf.function(
+        input_signature=(
+            tf.TensorSpec(shape=[None,None,3], dtype=tf.float32),
+            tf.TensorSpec(shape=[], dtype=tf.int32),
+            tf.TensorSpec(shape=[], dtype=tf.float32),)
+    )
+    def __call__(self, img, steps, step_size):
+        print("Tracing")
+        loss = tf.constant(0.0)
+        for n in tf.range(steps):
+            with tf.GradientTape() as tape:
+                # This needs gradients relative to `img`
+                # `GradientTape` only watches `tf.Variable`s by default
+                tape.watch(img)
+                loss = calc_loss(img, self.model)
+
+            # Calculate the gradient of the loss with respect to the pixels of the input image.
+            gradients = tape.gradient(loss, img)
+
+            # Normalize the gradients.
+            gradients /= tf.math.reduce_std(gradients) + 1e-8 
+
+            # In gradient ascent, the "loss" is maximized so that the input image increasingly "excites" the layers.
+            # You can update the image by directly adding the gradients (because they're the same shape!)
+            img = img + gradients*step_size
+            img = tf.clip_by_value(img, -1, 1)
+
+        return loss, img
+    
+def run_deep_dream_simple(img, steps=100, step_size=0.01):
+    # Convert from uint8 to the range expected by the model.
+    img = tfk.applications.inception_v3.preprocess_input(img)
+    img = tf.convert_to_tensor(img)
+    step_size = tf.convert_to_tensor(step_size)
+    steps_remaining = steps
+    step = 0
+    while steps_remaining:
+        if steps_remaining>100:
+            run_steps = tf.constant(100)
+        else:
+            run_steps = tf.constant(steps_remaining)
+        steps_remaining -= run_steps
+        step += run_steps
+
+        loss, img = deepdream(img, run_steps, tf.constant(step_size))
+
+        #display.clear_output(wait=True)
+        #show(deprocess(img))
+        #print ("Step {}, loss {}".format(step, loss))
 
 
-# saliency map
-test_img = test_images[testim_ind][np.newaxis,:,:,:]
-image = tf.Variable(test_img,dtype=float)
-with tf.GradientTape() as tape:
-    pred = model(image, training=False)
-    loss = pred[0][tf.argmax(pred[0])]
-grad = tape.gradient(loss, image)
+    #result = deprocess(img)
+    #display.clear_output(wait=True)
+    #show(result)
 
-dgrad_max = np.max(tf.math.abs(grad), axis=3)[0]
-arr_min, arr_max = np.min(dgrad_max), np.max(dgrad_max)
-grad_norm = (dgrad_max-arr_min)/(arr_max-arr_min + 1e-18)
-
-plt.figure(figsize=(10,10))
-plt.subplot(1,2,1)
-plt.xticks([])
-plt.yticks([])
-plt.grid(False)
-plt.imshow(test_images[testim_ind], cmap='viridis')
-plt.xlabel('Test image')
-plt.subplot(1,2,2)
-plt.xticks([])
-plt.yticks([])
-plt.grid(False)
-plt.imshow(grad_norm[:,:], cmap='viridis')
-plt.xlabel('Saliency map')
-plt.show()
+    return img#result
 
 
-# Grad-CAM
-grad_model = tf.keras.models.Model(
-        [model.layers[0].input], [model.layers[14].output, model.layers[-1].output]
-)
-with tf.GradientTape() as tape:
-    last_conv_layer_output, preds = grad_model(image)
-    pred_index = tf.argmax(preds[0])
-    top_class_channel = preds[:, pred_index]
-grads = tape.gradient(top_class_channel, last_conv_layer_output)
-pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+# Maximize the activations of these layers
+names = ['conv2d_11', 'conv2d_21']
+layers = [model.get_layer(name).output for name in names]
 
-heatmap = last_conv_layer_output * pooled_grads
-heatmap = tf.reduce_sum(heatmap, axis=(0,3))
-heatmap = heatmap.numpy()
+# Create the feature extraction model
+dream_model = tf.keras.Model(inputs=model.input, outputs=layers)
+
+
+deepdream = DeepDream(dream_model)
+
+dream_img = run_deep_dream_simple(img=test_images[0], steps=100, step_size=0.01)
 
 plt.figure(figsize=(10,10))
 plt.subplot(1,2,1)
@@ -141,6 +168,6 @@ plt.subplot(1,2,2)
 plt.xticks([])
 plt.yticks([])
 plt.grid(False)
-plt.imshow(heatmap, cmap='viridis')
-plt.xlabel('Grad-CAM')
+plt.imshow(dream_img, cmap='viridis')
+plt.xlabel('Deep Dream')
 plt.show()
