@@ -33,8 +33,8 @@ def train_and_evaluate(
 
     # test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
 
-    key_acc = 'accuracy'
-    key_val_acc = 'val_accuracy'
+    key_acc = 'acc'
+    key_val_acc = 'val_acc'
 
     print('Accuracy = ', history.history[key_acc][-1])
     print('Validation accuracy = ', history.history[key_val_acc][-1])

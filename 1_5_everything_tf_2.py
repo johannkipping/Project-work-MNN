@@ -7,7 +7,7 @@ import tensorflow.keras  as tfk
 import tensorflow  as tf
 import matplotlib.pyplot as plt
 
-from models import FinalModelTF2
+from models import FinalModelTF2, FinalModel
 from custom_utils import train_and_evaluate
 
 # Load and reformat Fashion MNIST dataset 
@@ -36,7 +36,7 @@ data_dict = {
 # train parameters initialization
 train_param_dict = {
       'batch_size': 128,
-      'epochs': 1
+      'epochs': 15
 }
 
 model_param_dict = {
@@ -47,7 +47,7 @@ model_param_dict = {
 }
 
 
-finmodel = FinalModelTF2(name='final', drop_prob=0.25, **model_param_dict)
+finmodel = FinalModel(name='final', drop_prob=0.25, **model_param_dict)
 
 model = tfk.models.Sequential()
 model.title = 'tf2_final'
