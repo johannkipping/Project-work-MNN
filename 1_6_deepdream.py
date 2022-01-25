@@ -139,7 +139,7 @@ def run_deep_dream_simple(img, steps=100, step_size=0.01):
 
 # Maximize the activations of these layers
 names = ['conv2d']
-#names = ['conv2d_1', 'conv2d_5']
+names = ['conv2d_2', 'conv2d_5']
 layers = [model.get_layer(name).output for name in names]
 
 # Create the feature extraction model
@@ -148,33 +148,57 @@ dream_model = tf.keras.Model(inputs=model.input, outputs=layers)
 
 deepdream = DeepDream(dream_model)
 
-test_img = tf.cast(test_images[12], tf.float32)
-#dream_img = run_deep_dream_simple(img=test_img, steps=4000, step_size=0.0001)
+test_img = tf.cast(test_images[13], tf.float32)
 
-#######################################################
-# OCTAVE SCALING
-import time
-start = time.time()
+dream_img = test_img
+base_shape = tf.shape(dream_img)[:-1]
+plt.figure()
+for i in range(100):
+    dream_img = run_deep_dream_simple(img=dream_img, steps=100, step_size=0.001*i/100)
+    #figsize=(10,10))
+    plt.xticks([])
+    plt.yticks([])
+    plt.grid(False)
+    plt.imshow(dream_img)
+    plt.savefig(impath + 'movie/' + str(i))
+    plt.clf()   
+    #dream_img = tf.image.resize(dream_img, base_shape).numpy()
+for i in range(100,300):
+    dream_img = run_deep_dream_simple(img=dream_img, steps=100, step_size=0.002)
+    #plt.figure()#figsize=(10,10))
+    plt.xticks([])
+    plt.yticks([])
+    plt.grid(False)
+    plt.imshow(dream_img)
+    plt.savefig(impath + 'movie/' + str(i))
+    plt.clf()   
+    dream_img = dream_img[1:-1, 1:-1, :]
+    dream_img = tf.image.resize(dream_img, base_shape).numpy()
 
-OCTAVE_SCALE = 1.30
+# #######################################################
+# # OCTAVE SCALING
+# import time
+# start = time.time()
 
-img = tf.constant(np.array(test_img))
-base_shape = tf.shape(img)[:-1]
-float_base_shape = tf.cast(base_shape, tf.float32)
+# OCTAVE_SCALE = 1.30
 
-for n in range(-2, 3):
-  new_shape = tf.cast(float_base_shape*(OCTAVE_SCALE**n), tf.int32)
+# img = tf.constant(np.array(test_img))
+# base_shape = tf.shape(img)[:-1]
+# float_base_shape = tf.cast(base_shape, tf.float32)
 
-  img = tf.image.resize(img, new_shape).numpy()
-  img = tf.image.resize(img, base_shape).numpy()
+# for n in range(-2, 3):
+#   new_shape = tf.cast(float_base_shape*(OCTAVE_SCALE**n), tf.int32)
 
-  img = run_deep_dream_simple(img=img, steps=50, step_size=0.01)
+#   img = tf.image.resize(img, new_shape).numpy()
+#   img = tf.image.resize(img, base_shape).numpy()
 
-img = tf.image.resize(img, base_shape)
+#   img = run_deep_dream_simple(img=img, steps=50, step_size=0.001)
 
-end = time.time()
-end-start
-#####################################################
+# img = tf.image.resize(img, base_shape)
+
+# end = time.time()
+# end-start
+# #####################################################
 
 
 plt.figure(figsize=(10,10))
@@ -188,7 +212,7 @@ plt.subplot(1,2,2)
 plt.xticks([])
 plt.yticks([])
 plt.grid(False)
-plt.imshow(img)
+plt.imshow(dream_img)
 plt.xlabel('Deep Dream')
 #plt.show()
 
