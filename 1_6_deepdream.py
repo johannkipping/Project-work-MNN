@@ -7,7 +7,7 @@ import tensorflow.keras  as tfk
 import matplotlib.pyplot as plt
 import tensorflow  as tf
 
-from models import FinalModelTF2
+from model_builders import get_final_model
 from custom_utils import train_and_evaluate
 
 
@@ -51,22 +51,15 @@ model_param_dict = {
 testim_ind = 0
 
 # Loading model
-finmodel = FinalModelTF2(name='final', drop_prob=0.25, **model_param_dict)
-
-model = tfk.models.Sequential()
-model.title = 'tf2_final'
-model.learning_rate = model_param_dict['eta']
-model.add(tfk.layers.InputLayer(input_shape=(32,32,3)))
-for layer in finmodel.layers:
-    model.add(layer)
+model = get_final_model(name='final', **model_param_dict)
 
 model.compile(
-      optimizer=finmodel.optimizer, 
+      optimizer=model.optimizer, 
       loss='categorical_crossentropy',
       metrics=['accuracy']
 )
 
-model.load_weights('./final_model_weights_tf2')
+model.load_weights('./models/final_cifar10')
 
 
 def calc_loss(img, model):

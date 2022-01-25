@@ -9,9 +9,8 @@ import tensorflow  as tf
 from scipy.ndimage import zoom
 tf.enable_eager_execution()
 
-from models import FinalModel
+from model_builders import get_final_model
 from custom_utils import train_and_evaluate
-
 
 
 # Load and reformat Fashion MNIST dataset 
@@ -52,20 +51,15 @@ model_param_dict = {
 testim_ind = 0
 
 # Loading model
-finmodel = FinalModel(name='final', drop_prob=0.25, **model_param_dict)
-
-model = tfk.models.Sequential()
-model.add(tfk.layers.InputLayer(input_shape=(28,28,1)))
-for layer in finmodel.layers:
-    model.add(layer)
+model = get_final_model(name='final', **model_param_dict)
 
 model.compile(
-      optimizer=finmodel.optimizer, 
+      optimizer=model.optimizer, 
       loss='categorical_crossentropy',
       metrics=['accuracy']
 )
 
-model.load_weights('./final_model_weights_fashion')
+model.load_weights('./models/final_fmnist')
 
 
 # Layer activation visualization

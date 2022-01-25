@@ -6,7 +6,8 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
 import matplotlib.pyplot as plt
 
-from models import InitModel, FinalModel
+from models import InitModel
+from model_builders import get_final_model
 from custom_utils import train_and_evaluate
 
 # Load and reformat Fashion MNIST dataset 
@@ -64,7 +65,7 @@ info_str = train_and_evaluate(
       acc_bool=True
 )
 
-model = FinalModel(name='final', drop_prob=0.25, **model_param_dict)
+model = get_final_model(name='final', drop_prob=0.25, **model_param_dict)
 model.compile(
       optimizer=model.optimizer, 
       loss='categorical_crossentropy',
@@ -78,7 +79,7 @@ info_str = train_and_evaluate(
       acc_bool=True
 )
 
-model.save_weights('./final_model_weights' )
+#model.save_weights('./final_model_weights' )
 
 plt.savefig(impath + 'final.png')
 plt.clf()

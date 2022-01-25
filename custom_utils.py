@@ -4,6 +4,7 @@ import warnings
 import matplotlib.pyplot as plt
 warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
+import tensorflow  as tf
 
 
 def train_and_evaluate(
@@ -32,9 +33,14 @@ def train_and_evaluate(
     model.summary()
 
     # test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
-
-    key_acc = 'acc'
-    key_val_acc = 'val_acc'
+    
+    if tf.__version__[0]=='1':
+        key_acc = 'acc'
+        key_val_acc = 'val_acc'
+    else:
+        key_acc = 'accuracy'
+        key_val_acc = 'val_accuracy'
+    
 
     print('Accuracy = ', history.history[key_acc][-1])
     print('Validation accuracy = ', history.history[key_val_acc][-1])

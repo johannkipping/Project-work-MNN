@@ -18,7 +18,7 @@ def get_final_model(
     model.num_classes = num_classes
     model.learning_rate = eta
     
-    if tf.__version__[0]==1:
+    if tf.__version__[0]=='1':
         model.optimizer = tf.train.AdamOptimizer(eta)
     else:
         model.optimizer = tf.optimizers.Adam(eta)
@@ -96,3 +96,5 @@ def get_final_model(
         activation='softmax',
         kernel_initializer=initializer
     ))
+    
+    return model
