@@ -6,28 +6,27 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
 import matplotlib.pyplot as plt
 import tensorflow  as tf
-from scipy.ndimage import zoom
-tf.enable_eager_execution()
 
-from models import FinalModel
+from models import FinalModelTF2
 from custom_utils import train_and_evaluate
 
 
-
 # Load and reformat Fashion MNIST dataset 
-fashion_mnist = tfk.datasets.fashion_mnist
-(train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
+cifar10 = tfk.datasets.cifar10
+(train_images, train_labels), (test_images, test_labels) = cifar10.load_data()
 
 class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
                'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
-train_images = train_images[:,:,:,np.newaxis]
+#train_images = train_images[:,:,:,np.newaxis]
 train_images = train_images / 255.0
-test_images = test_images[:,:,:,np.newaxis]
+#test_images = test_images[:,:,:,np.newaxis]
 test_images = test_images / 255.0
 
-#train_labels = tfk.utils.to_categorical(train_labels)
-#test_labels = tfk.utils.to_categorical(test_labels)
+train_labels = tfk.utils.to_categorical(train_labels)
+test_labels = tfk.utils.to_categorical(test_labels)
+
+
 
 # path were figures will be saved
 impath = './img_1_6_attribution/'
@@ -52,10 +51,12 @@ model_param_dict = {
 testim_ind = 0
 
 # Loading model
-finmodel = FinalModel(name='final', drop_prob=0.25, **model_param_dict)
+finmodel = FinalModelTF2(name='final', drop_prob=0.25, **model_param_dict)
 
 model = tfk.models.Sequential()
-model.add(tfk.layers.InputLayer(input_shape=(28,28,1)))
+model.title = 'tf2_final'
+model.learning_rate = model_param_dict['eta']
+model.add(tfk.layers.InputLayer(input_shape=(32,32,3)))
 for layer in finmodel.layers:
     model.add(layer)
 
@@ -65,7 +66,7 @@ model.compile(
       metrics=['accuracy']
 )
 
-model.load_weights('./final_model_weights_fashion')
+model.load_weights('./final_model_weights_tf2')
 
 
 def calc_loss(img, model):
@@ -89,7 +90,7 @@ class DeepDream(tf.Module):
 
     @tf.function(
         input_signature=(
-            tf.TensorSpec(shape=[None,None,3], dtype=tf.float32),
+            tf.TensorSpec(shape=[32,32,3], dtype=tf.float32),
             tf.TensorSpec(shape=[], dtype=tf.int32),
             tf.TensorSpec(shape=[], dtype=tf.float32),)
     )
@@ -112,13 +113,13 @@ class DeepDream(tf.Module):
             # In gradient ascent, the "loss" is maximized so that the input image increasingly "excites" the layers.
             # You can update the image by directly adding the gradients (because they're the same shape!)
             img = img + gradients*step_size
-            img = tf.clip_by_value(img, -1, 1)
+            img = tf.clip_by_value(img, 0, 1)
 
         return loss, img
     
 def run_deep_dream_simple(img, steps=100, step_size=0.01):
     # Convert from uint8 to the range expected by the model.
-    img = tfk.applications.inception_v3.preprocess_input(img)
+    #img = tfk.applications.inception_v3.preprocess_input(img)
     img = tf.convert_to_tensor(img)
     step_size = tf.convert_to_tensor(step_size)
     steps_remaining = steps
@@ -133,20 +134,12 @@ def run_deep_dream_simple(img, steps=100, step_size=0.01):
 
         loss, img = deepdream(img, run_steps, tf.constant(step_size))
 
-        #display.clear_output(wait=True)
-        #show(deprocess(img))
-        #print ("Step {}, loss {}".format(step, loss))
-
-
-    #result = deprocess(img)
-    #display.clear_output(wait=True)
-    #show(result)
-
-    return img#result
+    return img
 
 
 # Maximize the activations of these layers
-names = ['conv2d_11', 'conv2d_21']
+names = ['conv2d']
+#names = ['conv2d_1', 'conv2d_5']
 layers = [model.get_layer(name).output for name in names]
 
 # Create the feature extraction model
@@ -155,19 +148,50 @@ dream_model = tf.keras.Model(inputs=model.input, outputs=layers)
 
 deepdream = DeepDream(dream_model)
 
-dream_img = run_deep_dream_simple(img=test_images[0], steps=100, step_size=0.01)
+test_img = tf.cast(test_images[12], tf.float32)
+#dream_img = run_deep_dream_simple(img=test_img, steps=4000, step_size=0.0001)
+
+#######################################################
+# OCTAVE SCALING
+import time
+start = time.time()
+
+OCTAVE_SCALE = 1.30
+
+img = tf.constant(np.array(test_img))
+base_shape = tf.shape(img)[:-1]
+float_base_shape = tf.cast(base_shape, tf.float32)
+
+for n in range(-2, 3):
+  new_shape = tf.cast(float_base_shape*(OCTAVE_SCALE**n), tf.int32)
+
+  img = tf.image.resize(img, new_shape).numpy()
+  img = tf.image.resize(img, base_shape).numpy()
+
+  img = run_deep_dream_simple(img=img, steps=50, step_size=0.01)
+
+img = tf.image.resize(img, base_shape)
+
+end = time.time()
+end-start
+#####################################################
+
 
 plt.figure(figsize=(10,10))
 plt.subplot(1,2,1)
 plt.xticks([])
 plt.yticks([])
 plt.grid(False)
-plt.imshow(test_images[testim_ind])
+plt.imshow(test_img)
 plt.xlabel('Test image')
 plt.subplot(1,2,2)
 plt.xticks([])
 plt.yticks([])
 plt.grid(False)
-plt.imshow(dream_img, cmap='viridis')
+plt.imshow(img)
 plt.xlabel('Deep Dream')
-plt.show()
+#plt.show()
+
+
+plt.savefig(impath + names[0])
+plt.clf()
