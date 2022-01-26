@@ -645,3 +645,37 @@ class Autoencoder(tfk.Model):
         encoded = self.encoder(x)
         decoded = self.decoder(encoded)
         return decoded
+    
+    
+class AutoencoderConv(tfk.Model):
+    def __init__(
+            self,
+            name='autoencoder',
+            activation='relu',
+            initializer='he_uniform',
+            eta=0.001
+        ):
+        super(AutoencoderConv, self).__init__()
+        self.title = name
+        self.learning_rate = eta
+    
+        if tf.__version__[0]=='1':
+            self.optimizer = tf.train.AdamOptimizer(eta)
+        else:
+            self.optimizer = tf.optimizers.Adam(eta)
+        
+        self.encoder = tf.keras.Sequential([
+            tfk.layers.Input(shape=(28, 28, 1)),
+            tfk.layers.Conv2D(16, (3, 3), activation=activation, padding='same', strides=2),
+            tfk.layers.Conv2D(8, (3, 3), activation=activation, padding='same', strides=2)
+        ])
+        self.decoder = tf.keras.Sequential([
+            tfk.layers.Conv2DTranspose(8, kernel_size=3, strides=2, activation=activation, padding='same'),
+            tfk.layers.Conv2DTranspose(16, kernel_size=3, strides=2, activation=activation, padding='same'),
+            tfk.layers.Conv2D(1, kernel_size=(3, 3), activation='sigmoid', padding='same')
+        ])
+
+    def call(self, x):
+        encoded = self.encoder(x)
+        decoded = self.decoder(encoded)
+        return decoded

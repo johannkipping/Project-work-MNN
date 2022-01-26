@@ -7,7 +7,7 @@ import tensorflow.keras  as tfk
 import matplotlib.pyplot as plt
 import tensorflow  as tf
 
-from models import Autoencoder
+from models import Autoencoder, AutoencoderConv
 from custom_utils import train_and_evaluate
 
 
@@ -50,13 +50,11 @@ testim_ind = 0
 
 # Loading model
 model = Autoencoder(name='autoencoder_3', latent_dim=3, **model_param_dict)
-
 model.compile(
       optimizer=model.optimizer, 
       loss='mean_squared_error',
       metrics=['accuracy']
 )
-
 model.save_weights('./models/autoencoder_3')
 
 plt.savefig(impath + 'auto_training_3')
@@ -65,14 +63,25 @@ plt.clf()
 
 # Loading model
 model = Autoencoder(name='autoencoder_64', latent_dim=64, **model_param_dict)
-
 model.compile(
       optimizer=model.optimizer, 
       loss='mean_squared_error',
       metrics=['accuracy']
 )
-
 model.save_weights('./models/autoencoder_64')
 
 plt.savefig(impath + 'auto_training_64')
+plt.clf()
+
+
+# Loading model
+model = AutoencoderConv(name='autoencoder_conv', **model_param_dict)
+model.compile(
+      optimizer=model.optimizer, 
+      loss='mean_squared_error',
+      metrics=['accuracy']
+)
+model.save_weights('./models/autoencoder_conv')
+
+plt.savefig(impath + 'auto_training_conv')
 plt.clf()
