@@ -1,6 +1,7 @@
 from time   import time      # For time measuring
 import warnings
 
+import numpy as np
 import matplotlib.pyplot as plt
 warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
@@ -75,3 +76,45 @@ def train_and_evaluate(
     plt.title(info_str)
     
     return info_str
+
+
+def plot_latent_space_autoencoder_mnist(
+		x_test,
+		y_test,
+		encoder,
+		decoder, 
+		autoencoder,
+		dim,
+		plot_name
+    ):
+
+	labels = y_test
+	W1_pre, W2_pre = autoencoder.get_weights()
+	W1, W2 = np.array(W1_pre), np.array(W2_pre)
+	tf_encoded = x_test @ W1
+	tf_encoded2 = encoder.predict(x_test)
+	print(np.linalg.norm(tf_encoded-tf_encoded2))
+	fig = plt.figure(figsize=(5.5, 4))
+	if dim == 2:
+		ax = fig.add_subplot()
+		sc = ax.scatter(tf_encoded2[:, 0],
+						tf_encoded2[:, 1],
+						s=1, c=labels, cmap='tab10')
+		ax.set_title('Latent space of MNIST linear AE', fontsize=10)
+		ax.set_xlabel('x')
+		ax.set_ylabel('y')
+	elif dim == 3:
+		ax = fig.add_subplot(projection='3d')
+		sc = ax.scatter(tf_encoded2[:, 0],
+						tf_encoded2[:, 1],
+						tf_encoded2[:, 2],
+						s=1, c=labels, cmap='tab10')
+		ax.set_title('Latent space of MNIST linear AE', fontsize=10)
+		ax.set_xlabel('x')
+		ax.set_ylabel('y')
+		ax.set_zlabel('z')
+	#plt.axis('square')
+	cbar = fig.colorbar(sc)
+	cbar.set_ticks(ticks=np.linspace(0.5,8.5,10))
+	cbar.set_ticklabels(['0','1','2','3','4','5','6','7','8','9'])
+	plt.savefig(plot_name+'.pdf') 

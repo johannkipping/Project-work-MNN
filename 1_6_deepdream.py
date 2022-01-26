@@ -1,5 +1,5 @@
 import warnings
-
+import itertools
 import numpy             as np
 import os
 warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -10,13 +10,13 @@ import tensorflow  as tf
 from model_builders import get_final_model
 from custom_utils import train_and_evaluate
 
+from PIL import Image
+import numpy as np
+
 
 # Load and reformat Fashion MNIST dataset 
 cifar10 = tfk.datasets.cifar10
 (train_images, train_labels), (test_images, test_labels) = cifar10.load_data()
-
-class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
-               'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
 #train_images = train_images[:,:,:,np.newaxis]
 train_images = train_images / 255.0
@@ -51,7 +51,7 @@ model_param_dict = {
 testim_ind = 0
 
 # Loading model
-model = get_final_model(name='final', **model_param_dict)
+model = get_final_model(name='final', input_shape = (32,32,3), **model_param_dict)
 
 model.compile(
       optimizer=model.optimizer, 
@@ -69,7 +69,6 @@ def calc_loss(img, model):
     layer_activations = model(img_batch)
     if len(layer_activations) == 1:
         layer_activations = [layer_activations]
-
     losses = []
     for act in layer_activations:
         loss = tf.math.reduce_mean(act)
@@ -130,85 +129,112 @@ def run_deep_dream_simple(img, steps=100, step_size=0.01):
     return img
 
 
-# Maximize the activations of these layers
-names = ['conv2d']
-names = ['conv2d_2', 'conv2d_5']
-layers = [model.get_layer(name).output for name in names]
 
-# Create the feature extraction model
-dream_model = tf.keras.Model(inputs=model.input, outputs=layers)
+#testing
+testing = 'gif'
+#test_img = tf.cast(test_images[50], tf.float32)
 
-
-deepdream = DeepDream(dream_model)
-
-test_img = tf.cast(test_images[13], tf.float32)
-
-dream_img = test_img
-base_shape = tf.shape(dream_img)[:-1]
-plt.figure()
-for i in range(100):
-    dream_img = run_deep_dream_simple(img=dream_img, steps=100, step_size=0.001*i/100)
-    #figsize=(10,10))
-    plt.xticks([])
-    plt.yticks([])
-    plt.grid(False)
-    plt.imshow(dream_img)
-    plt.savefig(impath + 'movie/' + str(i))
-    plt.clf()   
-    #dream_img = tf.image.resize(dream_img, base_shape).numpy()
-for i in range(100,300):
-    dream_img = run_deep_dream_simple(img=dream_img, steps=100, step_size=0.002)
-    #plt.figure()#figsize=(10,10))
-    plt.xticks([])
-    plt.yticks([])
-    plt.grid(False)
-    plt.imshow(dream_img)
-    plt.savefig(impath + 'movie/' + str(i))
-    plt.clf()   
-    dream_img = dream_img[1:-1, 1:-1, :]
-    dream_img = tf.image.resize(dream_img, base_shape).numpy()
-
-# #######################################################
-# # OCTAVE SCALING
-# import time
-# start = time.time()
-
-# OCTAVE_SCALE = 1.30
-
-# img = tf.constant(np.array(test_img))
-# base_shape = tf.shape(img)[:-1]
-# float_base_shape = tf.cast(base_shape, tf.float32)
-
-# for n in range(-2, 3):
-#   new_shape = tf.cast(float_base_shape*(OCTAVE_SCALE**n), tf.int32)
-
-#   img = tf.image.resize(img, new_shape).numpy()
-#   img = tf.image.resize(img, base_shape).numpy()
-
-#   img = run_deep_dream_simple(img=img, steps=50, step_size=0.001)
-
-# img = tf.image.resize(img, base_shape)
-
-# end = time.time()
-# end-start
-# #####################################################
+im_frame = Image.open('./Lucid.png')
+np_frame = np.array(im_frame.getdata())/255
+np_frame = np_frame[:,:3]
+np_frame = np_frame.reshape((32,32,3))
+test_img = tf.cast(np_frame, tf.float32)
 
 
-plt.figure(figsize=(10,10))
-plt.subplot(1,2,1)
-plt.xticks([])
-plt.yticks([])
-plt.grid(False)
-plt.imshow(test_img)
-plt.xlabel('Test image')
-plt.subplot(1,2,2)
-plt.xticks([])
-plt.yticks([])
-plt.grid(False)
-plt.imshow(dream_img)
-plt.xlabel('Deep Dream')
-#plt.show()
+if testing == 'gif':
+    # Maximize the activations of these layers
+    names = ['conv2d_3']#, 'conv2d_5']
+    layers = [model.get_layer(name).output for name in names]
+
+    # Create the feature extraction model
+    dream_model = tf.keras.Model(inputs=model.input, outputs=layers)
 
 
-plt.savefig(impath + names[0])
-plt.clf()
+    deepdream = DeepDream(dream_model)
+    
+    dream_img = test_img
+    base_shape = tf.shape(dream_img)[:-1]
+    plt.figure()
+    for i in range(200):
+        dream_img = run_deep_dream_simple(img=dream_img, steps=100, step_size=0.0005*i/100)
+        #figsize=(10,10))
+        plt.xticks([])
+        plt.yticks([])
+        plt.grid(False)
+        plt.imshow(dream_img)
+        plt.savefig(impath + 'movie/' + str(i))
+        plt.clf()   
+        #dream_img = tf.image.resize(dream_img, base_shape).numpy()
+    for i in range(200,400):
+        dream_img = run_deep_dream_simple(img=dream_img, steps=100, step_size=0.001)
+        #plt.figure()#figsize=(10,10))
+        plt.xticks([])
+        plt.yticks([])
+        plt.grid(False)
+        plt.imshow(dream_img)
+        plt.savefig(impath + 'movie/' + str(i))
+        plt.clf()   
+        dream_img = dream_img[1:-1, 1:-1, :]
+        dream_img = tf.image.resize(dream_img, base_shape).numpy()
+else:
+    plt.figure()
+    # Maximize the activations of these layers
+    names = ['conv2d', 'conv2d_1', 'conv2d_2', 'conv2d_3', 'conv2d_4', 'conv2d_5',]
+    sin_combinations = list(itertools.combinations(names, 1))
+    plu_combinations = list(itertools.combinations(names, 2))
+    combinations = sin_combinations + plu_combinations
+    
+    for names in combinations:   
+        
+        layers = [model.get_layer(name).output for name in names]
+
+
+        # Create the feature extraction model
+        dream_model = tf.keras.Model(inputs=model.input, outputs=layers)
+
+
+        deepdream = DeepDream(dream_model)
+        
+        #######################################################
+        # OCTAVE SCALING
+        import time
+        start = time.time()
+
+        OCTAVE_SCALE = 1.30
+
+        img = tf.constant(np.array(test_img))
+        base_shape = tf.shape(img)[:-1]
+        float_base_shape = tf.cast(base_shape, tf.float32)
+
+        for n in range(-2, 3):
+            new_shape = tf.cast(float_base_shape*(OCTAVE_SCALE**n), tf.int32)
+
+            img = tf.image.resize(img, new_shape).numpy()
+            img = tf.image.resize(img, base_shape).numpy()
+
+            img = run_deep_dream_simple(img=img, steps=50, step_size=0.001)
+
+            img = tf.image.resize(img, base_shape)
+
+        end = time.time()
+        end-start
+        #####################################################
+
+
+        plt.subplot(1,2,1)
+        plt.xticks([])
+        plt.yticks([])
+        plt.grid(False)
+        plt.imshow(test_img)
+        plt.xlabel('Test image')
+        plt.subplot(1,2,2)
+        plt.xticks([])
+        plt.yticks([])
+        plt.grid(False)
+        plt.imshow(img)
+        plt.xlabel('Deep Dream')
+        #plt.show()
+
+
+        plt.savefig(impath + '/combinations/' + '_'.join(names))
+        plt.clf()

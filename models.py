@@ -609,3 +609,39 @@ class BatchnormModel(tfk.Model):
         shape = tf.TensorShape(input_shape).as_list()
         shape[-1] = self.num_classes
         return tf.TensorShape(shape)
+    
+    
+class Autoencoder(tfk.Model):
+    def __init__(
+            self,
+            latent_dim=3,
+            name='autoencoder',
+            activation='relu',
+            initializer='he_uniform',
+            eta=0.001
+        ):
+        super(Autoencoder, self).__init__()
+        self.title = name
+        self.learning_rate = eta
+    
+        if tf.__version__[0]=='1':
+            self.optimizer = tf.train.AdamOptimizer(eta)
+        else:
+            self.optimizer = tf.optimizers.Adam(eta)
+        
+        self.latent_dim = latent_dim   
+        self.encoder = tf.keras.Sequential([
+            tfk.layers.Flatten(),
+            tfk.layers.Dense(128, activation=activation),
+            tfk.layers.Dense(latent_dim, activation=activation)
+        ])
+        self.decoder = tf.keras.Sequential([
+            tfk.layers.Dense(128, activation=activation),
+            tfk.layers.Dense(784, activation='sigmoid'),
+            tfk.layers.Reshape((28, 28))
+        ])
+
+    def call(self, x):
+        encoded = self.encoder(x)
+        decoded = self.decoder(encoded)
+        return decoded
