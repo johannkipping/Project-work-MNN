@@ -42,8 +42,13 @@ data_dict = {
 model_param_dict = {
       'activation': 'relu',
       'initializer': 'he_uniform',
-      'num_classes': 10,
       'eta': 0.001
+}
+
+# train parameters initialization
+train_param_dict = {
+      'batch_size': 128,
+      'epochs': 20
 }
 
 testim_ind = 0
@@ -54,6 +59,12 @@ model.compile(
       optimizer=model.optimizer, 
       loss='mean_squared_error',
       metrics=['accuracy']
+)
+info_str = train_and_evaluate(
+      model,
+      **train_param_dict,
+      **data_dict,
+      acc_bool=True
 )
 model.save_weights('./models/autoencoder_3')
 
@@ -68,6 +79,12 @@ model.compile(
       loss='mean_squared_error',
       metrics=['accuracy']
 )
+info_str = train_and_evaluate(
+      model,
+      **train_param_dict,
+      **data_dict,
+      acc_bool=True
+)
 model.save_weights('./models/autoencoder_64')
 
 plt.savefig(impath + 'auto_training_64')
@@ -80,6 +97,12 @@ model.compile(
       optimizer=model.optimizer, 
       loss='mean_squared_error',
       metrics=['accuracy']
+)
+info_str = train_and_evaluate(
+      model,
+      **train_param_dict,
+      **data_dict,
+      acc_bool=True
 )
 model.save_weights('./models/autoencoder_conv')
 

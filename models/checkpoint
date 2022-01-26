@@ -1,2 +1,2 @@
-model_checkpoint_path: "final_fmnist"
-all_model_checkpoint_paths: "final_fmnist"
+model_checkpoint_path: "autoencoder_conv"
+all_model_checkpoint_paths: "autoencoder_conv"

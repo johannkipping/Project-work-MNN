@@ -42,7 +42,6 @@ data_dict = {
 model_param_dict = {
       'activation': 'relu',
       'initializer': 'he_uniform',
-      'num_classes': 10,
       'eta': 0.001
 }
 

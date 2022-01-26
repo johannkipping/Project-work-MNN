@@ -665,7 +665,6 @@ class AutoencoderConv(tfk.Model):
             self.optimizer = tf.optimizers.Adam(eta)
         
         self.encoder = tf.keras.Sequential([
-            tfk.layers.Input(shape=(28, 28, 1)),
             tfk.layers.Conv2D(16, (3, 3), activation=activation, padding='same', strides=2),
             tfk.layers.Conv2D(8, (3, 3), activation=activation, padding='same', strides=2)
         ])

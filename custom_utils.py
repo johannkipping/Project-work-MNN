@@ -20,6 +20,7 @@ def train_and_evaluate(
         test_labels=None,
     ):
     start = time()
+    print("blech")
     history = model.fit(
           train_images,
           train_labels,
@@ -28,7 +29,7 @@ def train_and_evaluate(
           validation_data=(test_images, test_labels)
     )
     train_time = time() - start
-
+    
     #model.save_weights('./' + 'weights_' + folder_name + '/' + model.title)
 
     model.summary()
