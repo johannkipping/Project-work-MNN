@@ -20,7 +20,6 @@ def train_and_evaluate(
         test_labels=None,
     ):
     start = time()
-    print("blech")
     history = model.fit(
           train_images,
           train_labels,
@@ -78,44 +77,74 @@ def train_and_evaluate(
     
     return info_str
 
+def plot_mnist_latent_space(x, y, class_names, encoder, name, dim):
+        
+    labels = y
+    tf_encoded = encoder.predict(x)
 
-def plot_latent_space_autoencoder_mnist(
-		x_test,
-		y_test,
-		encoder,
-		decoder, 
-		autoencoder,
-		dim,
-		plot_name
-    ):
+    fig = plt.figure()
+    if dim <3:
+        plt.scatter(tf_encoded[:, 0],
+                    tf_encoded[:, 1],
+                    s=1, c=labels, cmap='tab10')
+        plt.title('Latent space of Fashion-MNIST AE', fontsize=10)
+        plt.xlabel('x')
+        plt.ylabel('y')
+        cbar = plt.colorbar()
+        cbar.set_ticks(ticks=np.linspace(0.5,8.5,10))
+        cbar.set_ticklabels(class_names)
+        
+        plt.savefig(name, bbox_inches='tight')
+    else:
+        ax = fig.add_subplot(projection='3d')
+        sc = ax.scatter(
+                    tf_encoded[:, 0],
+                    tf_encoded[:, 1],
+                    tf_encoded[:, 2],
+                    s=1, c=labels, cmap='tab10')
+        ax.set_title('Latent space of Fashion-MNIST AE', fontsize=10)
+        ax.set_xlabel('x')
+        ax.set_ylabel('y')
+        ax.set_zlabel('z')
+        
+        cbar = fig.colorbar(sc)
+        cbar.set_ticks(ticks=np.linspace(0.5,8.5,10))
+        cbar.set_ticklabels(class_names)
+    
+        plt.show()
+ 
+ 
+def plot_latent_space_interpolation(encoder, data, labels, decoder, name,
+                                    scale_x=1.0, scale_y=1.0,
+                                    n=30, m=30, figsize=(15,15)):
+    # display a n*n 2D manifold of digits
+    digit_size = 28
+    figure = np.zeros((digit_size * n, digit_size * m))
+    # linearly spaced coordinates corresponding to the 2D plot
+    # of digit classes in the latent space
+    correction = scale_x / (m - 1)
+    grid_x = np.linspace(0, scale_x, m)
+    grid_y = np.linspace(0, scale_y, n)[::-1]
 
-	labels = y_test
-	W1_pre, W2_pre = autoencoder.get_weights()
-	W1, W2 = np.array(W1_pre), np.array(W2_pre)
-	tf_encoded = x_test @ W1
-	tf_encoded2 = encoder.predict(x_test)
-	print(np.linalg.norm(tf_encoded-tf_encoded2))
-	fig = plt.figure(figsize=(5.5, 4))
-	if dim == 2:
-		ax = fig.add_subplot()
-		sc = ax.scatter(tf_encoded2[:, 0],
-						tf_encoded2[:, 1],
-						s=1, c=labels, cmap='tab10')
-		ax.set_title('Latent space of MNIST linear AE', fontsize=10)
-		ax.set_xlabel('x')
-		ax.set_ylabel('y')
-	elif dim == 3:
-		ax = fig.add_subplot(projection='3d')
-		sc = ax.scatter(tf_encoded2[:, 0],
-						tf_encoded2[:, 1],
-						tf_encoded2[:, 2],
-						s=1, c=labels, cmap='tab10')
-		ax.set_title('Latent space of MNIST linear AE', fontsize=10)
-		ax.set_xlabel('x')
-		ax.set_ylabel('y')
-		ax.set_zlabel('z')
-	#plt.axis('square')
-	cbar = fig.colorbar(sc)
-	cbar.set_ticks(ticks=np.linspace(0.5,8.5,10))
-	cbar.set_ticklabels(['0','1','2','3','4','5','6','7','8','9'])
-	plt.savefig(plot_name+'.pdf') 
+    for i, yi in enumerate(grid_y):
+        for j, xi in enumerate(grid_x):
+            z_sample = np.array([[xi, yi]])
+            x_decoded = decoder.predict(z_sample).clip(min=0.0, max=1.0)
+            digit = x_decoded[0].reshape(digit_size, digit_size)
+            figure[
+                i * digit_size : (i + 1) * digit_size,
+                j * digit_size : (j + 1) * digit_size,
+            ] = digit
+
+    encoded = encoder.predict(data)
+    plt.figure(figsize=figsize)
+    scale_x += correction
+    scale_y += correction
+    axis = [0, scale_x, 0, scale_y]
+    plt.scatter(encoded[:, 0],
+                encoded[:, 1],
+                s=16, c=labels, cmap='tab10', alpha=.1) # alpha?
+
+    plt.imshow(figure, extent=axis, cmap='gray_r')
+    plt.axis(axis)
+    plt.savefig(name, bbox_inches='tight')

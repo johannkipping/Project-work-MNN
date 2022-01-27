@@ -1,2 +1,2 @@
-model_checkpoint_path: "autoencoder_conv"
-all_model_checkpoint_paths: "autoencoder_conv"
+model_checkpoint_path: "autoencoder_cut"
+all_model_checkpoint_paths: "autoencoder_cut"

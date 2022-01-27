@@ -638,7 +638,7 @@ class Autoencoder(tfk.Model):
         self.decoder = tf.keras.Sequential([
             tfk.layers.Dense(128, activation=activation),
             tfk.layers.Dense(784, activation='sigmoid'),
-            tfk.layers.Reshape((28, 28))
+            tfk.layers.Reshape((28, 28,1))
         ])
 
     def call(self, x):

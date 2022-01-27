@@ -3,6 +3,14 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
 import tensorflow  as tf
 
+#import tensorflow.compat.v1 as tf
+tf.enable_eager_execution()
+
+from tensorflow import keras
+from tensorflow.keras.layers import Input,\
+   Conv2D, Conv2DTranspose, Dense,\
+   LeakyReLU, Dropout, Flatten, Reshape 
+
 def get_final_model(
         name='final_model',
         num_classes=10,
@@ -98,3 +106,49 @@ def get_final_model(
     ))
     
     return model
+
+
+def get_gan(latent_dim):
+    input_shape = (latent_dim,)
+    opt = keras.optimizers.Adam(learning_rate=.0002, beta_1=.5)
+    # generative part
+    generator = keras.Sequential()
+    generator.add(Input(shape=input_shape))
+    generator.add(Dense(128*7*7))
+    generator.add(LeakyReLU(alpha=0.2)) 
+    generator.add(Reshape((7, 7, 128))) 
+    generator.add(Conv2DTranspose(128, (4,4), strides=(2,2), padding='same'))
+    generator.add(LeakyReLU(alpha=0.2))
+    generator.add(Conv2DTranspose(128, (4,4), strides=(2,2), padding='same'))
+    generator.add(LeakyReLU(alpha=0.2))
+    generator.add(Conv2D(1, (7,7), activation='sigmoid', padding='same'))
+    generator.compile(optimizer=opt, loss='binary_crossentropy')
+    # discriminative part
+    discriminator = keras.Sequential()
+    discriminator.add(Input(shape=(28,28,1)))
+    discriminator.add(Conv2D(64, (3,3), strides=(2, 2), padding='same'))
+    discriminator.add(LeakyReLU(alpha=0.2))
+    discriminator.add(Dropout(0.4)) 
+    discriminator.add(Conv2D(64, (3,3), strides=(2, 2), padding='same'))
+    discriminator.add(LeakyReLU(alpha=0.2))
+    discriminator.add(Dropout(0.4))
+    discriminator.add(Flatten())
+    discriminator.add(Dense(1, activation='sigmoid'))
+
+    discriminator.compile(optimizer=opt, loss='binary_crossentropy', metrics=['accuracy'])
+    
+    # Set weights as not trainable. 
+    # This does not effect the discriminator model 
+    # directly (since it was compiled with trainable
+    # weights before), but the whole GAN 
+    # (since it is compiled afterwards).
+    discriminator.trainable=False
+    # Define GAN
+    gan = keras.Sequential()
+    gan.add(Input(shape=input_shape))
+    gan.add(generator)
+    gan.add(discriminator)
+    gan.compile(optimizer=opt, loss='binary_crossentropy')
+    
+
+    return generator, discriminator, gan 
