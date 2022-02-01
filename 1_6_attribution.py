@@ -7,7 +7,7 @@ import tensorflow.keras  as tfk
 import matplotlib.pyplot as plt
 import tensorflow  as tf
 from scipy.ndimage import zoom
-tf.enable_eager_execution()
+#tf.enable_eager_execution()
 
 from model_builders import get_final_model
 from custom_utils import train_and_evaluate
@@ -93,45 +93,51 @@ dgrad_max = np.max(tf.math.abs(grad), axis=3)[0]
 arr_min, arr_max = np.min(dgrad_max), np.max(dgrad_max)
 grad_norm = (dgrad_max-arr_min)/(arr_max-arr_min + 1e-18)
 
-plt.figure(figsize=(10,10))
-plt.subplot(1,2,1)
-plt.xticks([])
-plt.yticks([])
-plt.grid(False)
-plt.imshow(test_images[testim_ind], cmap='viridis')
-plt.xlabel('Test image')
-plt.subplot(1,2,2)
-plt.xticks([])
-plt.yticks([])
-plt.grid(False)
-plt.imshow(grad_norm[:,:], cmap='viridis')
-plt.xlabel('Saliency map')
-plt.show()
+# plt.figure(figsize=(10,10))
+# plt.subplot(1,2,1)
+# plt.xticks([])
+# plt.yticks([])
+# plt.grid(False)
+# plt.imshow(test_images[testim_ind], cmap='viridis')
+# plt.xlabel('Test image')
+# plt.subplot(1,2,2)
+# plt.xticks([])
+# plt.yticks([])
+# plt.grid(False)
+# plt.imshow(grad_norm[:,:], cmap='viridis')
+# plt.xlabel('Saliency map')
+# plt.show()
 
 
 # Grad-CAM
 grad_model = tf.keras.models.Model(
-        [model.layers[0].input], [model.layers[14].output, model.layers[-1].output]
+        [model.layers[0].input], [model.layers[13].output, model.layers[-1].output]
 )
 with tf.GradientTape() as tape:
     last_conv_layer_output, preds = grad_model(image)
     pred_index = tf.argmax(preds[0])
     top_class_channel = preds[:, pred_index]
 grads = tape.gradient(top_class_channel, last_conv_layer_output)
-pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))    
 
 heatmap = last_conv_layer_output * pooled_grads
 heatmap = tf.reduce_sum(heatmap, axis=(0,3))
 heatmap = heatmap.numpy()
-
-plt.figure(figsize=(10,10))
-plt.subplot(1,2,1)
+                         
+plt.figure()#figsize=(10,10))
+plt.subplot(1,3,1)
 plt.xticks([])
 plt.yticks([])
 plt.grid(False)
-plt.imshow(test_images[testim_ind])
+plt.imshow(test_images[testim_ind], cmap='gray')
 plt.xlabel('Test image')
-plt.subplot(1,2,2)
+plt.subplot(1,3,2)
+plt.xticks([])
+plt.yticks([])
+plt.grid(False)
+plt.imshow(grad_norm[:,:], cmap='viridis')
+plt.xlabel('Saliency')
+plt.subplot(1,3,3)
 plt.xticks([])
 plt.yticks([])
 plt.grid(False)

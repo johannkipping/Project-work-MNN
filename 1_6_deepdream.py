@@ -5,6 +5,7 @@ import os
 warnings.simplefilter(action='ignore', category=FutureWarning)
 import tensorflow.keras  as tfk
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 import tensorflow  as tf
 
 from model_builders import get_final_model
@@ -131,14 +132,14 @@ def run_deep_dream_simple(img, steps=100, step_size=0.01):
 
 
 #testing
-testing = 'gif'
-#test_img = tf.cast(test_images[50], tf.float32)
+testing = 'combs'
+test_img = tf.cast(test_images[28], tf.float32)
 
-im_frame = Image.open('./Lucid.png')
-np_frame = np.array(im_frame.getdata())/255
-np_frame = np_frame[:,:3]
-np_frame = np_frame.reshape((32,32,3))
-test_img = tf.cast(np_frame, tf.float32)
+# im_frame = Image.open('./Lucid.png')
+# np_frame = np.array(im_frame.getdata())/255
+# np_frame = np_frame[:,:3]
+# np_frame = np_frame.reshape((32,32,3))
+# test_img = tf.cast(np_frame, tf.float32)
 
 
 if testing == 'gif':
@@ -156,7 +157,7 @@ if testing == 'gif':
     base_shape = tf.shape(dream_img)[:-1]
     plt.figure()
     for i in range(200):
-        dream_img = run_deep_dream_simple(img=dream_img, steps=100, step_size=0.0005*i/100)
+        dream_img = run_deep_dream_simple(img=dream_img, steps=50, step_size=0.0005*i/100)
         #figsize=(10,10))
         plt.xticks([])
         plt.yticks([])
@@ -177,14 +178,25 @@ if testing == 'gif':
         dream_img = dream_img[1:-1, 1:-1, :]
         dream_img = tf.image.resize(dream_img, base_shape).numpy()
 else:
-    plt.figure()
+    plt.figure(figsize = (6,3))
+    gs1 = gridspec.GridSpec(2, 4)
+    gs1.update(wspace=0.025, hspace=0.3)
+    plt.subplot(gs1[0])
+    plt.xticks([])
+    plt.yticks([])
+    plt.grid(False)
+    plt.imshow(test_img)
+    plt.xlabel('Test image')
+    
     # Maximize the activations of these layers
     names = ['conv2d', 'conv2d_1', 'conv2d_2', 'conv2d_3', 'conv2d_4', 'conv2d_5',]
     sin_combinations = list(itertools.combinations(names, 1))
-    plu_combinations = list(itertools.combinations(names, 2))
-    combinations = sin_combinations + plu_combinations
+    # plu_combinations = list(itertools.combinations(names, 2))
+    # combinations = sin_combinations + plu_combinations
+    combinations = sin_combinations
     
-    for names in combinations:   
+    adder = 1
+    for i,names in enumerate(combinations):   
         
         layers = [model.get_layer(name).output for name in names]
 
@@ -212,7 +224,7 @@ else:
             img = tf.image.resize(img, new_shape).numpy()
             img = tf.image.resize(img, base_shape).numpy()
 
-            img = run_deep_dream_simple(img=img, steps=50, step_size=0.001)
+            img = run_deep_dream_simple(img=img, steps=100, step_size=0.002)
 
             img = tf.image.resize(img, base_shape)
 
@@ -220,21 +232,17 @@ else:
         end-start
         #####################################################
 
-
-        plt.subplot(1,2,1)
-        plt.xticks([])
-        plt.yticks([])
-        plt.grid(False)
-        plt.imshow(test_img)
-        plt.xlabel('Test image')
-        plt.subplot(1,2,2)
+        if (i+1)%4==0:
+            adder += 1
+        
+        plt.subplot(gs1[i+adder])
         plt.xticks([])
         plt.yticks([])
         plt.grid(False)
         plt.imshow(img)
-        plt.xlabel('Deep Dream')
+        plt.xlabel(names[0])
         #plt.show()
 
-
-        plt.savefig(impath + '/combinations/' + '_'.join(names))
-        plt.clf()
+    plt.savefig(impath + 'deepdream_layers_new')
+    #plt.savefig(impath + '/combinations/' + '_'.join(names))
+    plt.clf()

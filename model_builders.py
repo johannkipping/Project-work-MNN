@@ -4,7 +4,7 @@ import tensorflow.keras  as tfk
 import tensorflow  as tf
 
 #import tensorflow.compat.v1 as tf
-tf.enable_eager_execution()
+#tf.enable_eager_execution()
 
 from tensorflow import keras
 from tensorflow.keras.layers import Input,\
